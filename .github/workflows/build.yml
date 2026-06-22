@@ -1,4 +1,4 @@
-name: Build FluxBooks Tray
+name: Build FluxBooks Tray V1
 
 on:
 workflow_dispatch:
