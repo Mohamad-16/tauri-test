@@ -23,7 +23,7 @@ function logout(): void {
   router.push("/login");
 }
 async function testNotification(): Promise<void> {
-  await showNotification("FluxBooks Test", "MANUAL BUTTON CLICK");
+  await showNotification("FluxBooks Test", "MANUAL BUTTON CLICK", "https://encrypted-tbn0.gscltatic.com/images?q=tbn:ANd9GcRMWEsAQBJZt3vranfFF4D9GEmNQ77oBSxy_dsq_XLNFMuD9TlQhJ9FTBAJ&s=10");
 }
 </script>
 

@@ -29,5 +29,8 @@ export default defineConfig(() => ({
     watch: {
       ignored: ["**/src-tauri/**"],
     },
+    build: {
+      sourcemap: false,
+    },
   },
 }));

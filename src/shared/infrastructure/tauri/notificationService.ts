@@ -7,6 +7,7 @@ import {
 export async function showNotification(
   title: string,
   body: string,
+  icon?: string
 ): Promise<void> {
   let permissionGranted = await isPermissionGranted();
 
@@ -19,6 +20,7 @@ export async function showNotification(
     sendNotification({
       title,
       body,
+      icon,
     });
   }
 }

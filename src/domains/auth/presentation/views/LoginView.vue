@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { authService } from "@/domains/auth/application/authService";
 import { useAuthStore } from "@/domains/auth/stores/authStore";
 import { useI18n } from "vue-i18n";
 import { themeClasses } from "@/shared/theme/themeClasses";
+import EyeClose from "@/assets/images/eye-close.svg";
+import EyeOpen from "@/assets/images/eye-open.svg";
 
 const { t } = useI18n();
 const authStore = useAuthStore();
@@ -15,6 +17,14 @@ const password = ref("Password@123");
 
 const errorMessage = ref("");
 const loading = ref(false);
+
+const isPasswordVisible = ref(false);
+const passwordInputType = computed(() =>
+  isPasswordVisible.value ? "text" : "password"
+);
+const eyeIconSrc = computed(() =>
+  isPasswordVisible.value ? EyeOpen : EyeClose
+);
 
 async function handleLogin(): Promise<void> {
   console.log("CLICKED");
@@ -47,6 +57,10 @@ async function handleLogin(): Promise<void> {
     loading.value = false;
   }
 }
+
+const togglePasswordVisibility = () => {
+  isPasswordVisible.value = !isPasswordVisible.value;
+};
 </script>
 
 <template>
@@ -84,7 +98,7 @@ async function handleLogin(): Promise<void> {
           <input
             v-model="email"
             type="email"
-            class="w-full rounded-xl border border-slate-300 bg-slate-200 dark:bg-slate-800 dark:border-slate-800 px-4 py-3 dark:text-white outline-none focus:border-emerald-500"
+            class="w-full rounded-xl border border-slate-300 bg-slate-200 dark:bg-slate-800  px-4 py-3 dark:text-white outline-none focus:border-emerald-500"
           />
         </div>
 
@@ -93,11 +107,25 @@ async function handleLogin(): Promise<void> {
             {{ t("login.password") }}
           </label>
 
-          <input
-            v-model="password"
-            type="password"
-            class="w-full rounded-xl border border-slate-300 bg-slate-200 dark:bg-slate-800 dark:border-slate-800 px-4 py-3 dark:text-white outline-none focus:border-emerald-500"
-          />
+          <div class="relative">
+            <input
+              v-model="password"
+              :type="passwordInputType"
+              class="w-full rounded-xl border border-slate-300 bg-slate-200 dark:bg-slate-800  px-4 py-3 pr-12 dark:text-white outline-none focus:border-emerald-500"
+            />
+
+            <!-- eye icon -->
+            <span>
+              <img
+                :src="eyeIconSrc"
+                alt=""
+                class="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 cursor-pointer dark:invert dark:brightness-0"
+                @click="togglePasswordVisibility"
+              />
+            </span>
+          </div>
+
+
         </div>
 
         <button
@@ -114,7 +142,7 @@ async function handleLogin(): Promise<void> {
       </div>
 
       <div
-        class="mt-8 border-t border-slate-800 pt-4 text-xs text-slate-500 dark:text-slate-400"
+        class="flex justify-center mt-8 border-t border-slate-300 pt-4 text-xs text-slate-500 dark:text-slate-400"
       >
         {{ t("login.demo") }}: admin@fluxbooks.com / Password@123
       </div>
