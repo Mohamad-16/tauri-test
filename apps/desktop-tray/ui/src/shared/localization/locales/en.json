@@ -5,7 +5,34 @@
     "dashboard": "Dashboard",
     "logout": "Logout",
     "connected": "Connected",
-    "test": "Test"
+    "test": "Test",
+    "comingSoon": "Coming soon"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "connections": "Connections",
+    "schedule": "Schedule",
+    "status": "Status",
+    "logs": "Logs"
+  },
+  "connections": {
+    "title": "Source Connections",
+    "description": "Connect client portals and manage their credentials (stored only in the OS keychain)."
+  },
+  "schedule": {
+    "title": "Scheduled Pulls",
+    "description": "Cron-based evidence pulls per connection, with retry and backoff."
+  },
+  "status": {
+    "title": "Tray Status",
+    "description": "Connectivity, updater state and sync health of this tray installation.",
+    "online": "Online",
+    "offline": "Offline",
+    "appVersion": "App version"
+  },
+  "logs": {
+    "title": "Activity Logs",
+    "description": "Append-only, secret-redacted operational log of this tray installation."
   },
   "theme": {
     "label": "Theme",

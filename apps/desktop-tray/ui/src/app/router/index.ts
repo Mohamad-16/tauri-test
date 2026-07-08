@@ -1,7 +1,11 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 import LoginView from "@/domains/auth/presentation/views/LoginView.vue";
+import ConnectionsView from "@/domains/connections/presentation/views/ConnectionsView.vue";
 import DashboardView from "@/domains/dashboard/presentation/views/DashboardView.vue";
+import LogsView from "@/domains/logs/presentation/views/LogsView.vue";
+import ScheduleView from "@/domains/schedule/presentation/views/ScheduleView.vue";
+import StatusView from "@/domains/status/presentation/views/StatusView.vue";
 import MainLayout from "@/shared/layouts/MainLayout.vue";
 
 export const router = createRouter({
@@ -35,6 +39,27 @@ export const router = createRouter({
         {
           path: "dashboard",
           component: DashboardView,
+          meta: { titleKey: "nav.dashboard" },
+        },
+        {
+          path: "connections",
+          component: ConnectionsView,
+          meta: { titleKey: "nav.connections" },
+        },
+        {
+          path: "schedule",
+          component: ScheduleView,
+          meta: { titleKey: "nav.schedule" },
+        },
+        {
+          path: "status",
+          component: StatusView,
+          meta: { titleKey: "nav.status" },
+        },
+        {
+          path: "logs",
+          component: LogsView,
+          meta: { titleKey: "nav.logs" },
         },
       ],
     },

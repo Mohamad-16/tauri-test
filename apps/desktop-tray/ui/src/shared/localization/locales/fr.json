@@ -5,7 +5,34 @@
     "dashboard": "Tableau de bord",
     "logout": "Déconnexion",
     "connected": "Connecté",
-    "test": "Test"
+    "test": "Test",
+    "comingSoon": "Bientôt disponible"
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "connections": "Connexions",
+    "schedule": "Planification",
+    "status": "État",
+    "logs": "Journaux"
+  },
+  "connections": {
+    "title": "Connexions sources",
+    "description": "Connectez les portails clients et gérez leurs identifiants (stockés uniquement dans le trousseau du système)."
+  },
+  "schedule": {
+    "title": "Extractions planifiées",
+    "description": "Extractions de justificatifs par cron pour chaque connexion, avec reprise et temporisation."
+  },
+  "status": {
+    "title": "État du tray",
+    "description": "Connectivité, état des mises à jour et santé de synchronisation de cette installation.",
+    "online": "En ligne",
+    "offline": "Hors ligne",
+    "appVersion": "Version de l'application"
+  },
+  "logs": {
+    "title": "Journaux d'activité",
+    "description": "Journal opérationnel en ajout seul, secrets expurgés, de cette installation."
   },
   "theme": {
     "label": "Thème",

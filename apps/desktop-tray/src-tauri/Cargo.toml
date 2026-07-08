@@ -1,18 +1,72 @@
 [package]
 name = "fluxbooks"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "FluxBooks desktop tray application"
+authors = ["FluxBooks"]
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# Spec T003 says Rust 1.79; the mid-2026 dependency tree (edition-2024 crates)
+# requires >= 1.85. Deviation recorded in docs/dependencies.md.
+rust-version = "1.85"
 
 [lib]
-# The `_lib` suffix may seem redundant but it is necessary
-# to make the lib name unique and wouldn't conflict with the bin name.
-# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+# The `_lib` suffix avoids a lib/bin name conflict on Windows.
 name = "fluxbooks_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-updater = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time"] }
+tokio-tungstenite = { version = "0.28", features = ["rustls-tls-native-roots"] }
+futures-util = "0.3"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tokio-cron-scheduler = "0.15"
+rusqlite = { version = "0.37", features = ["bundled"] }
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
+regex = "1"
+rand = "0.9"
+
+[dev-dependencies]
+proptest = "1"
+cucumber = "0.21"
+tempfile = "3"
+futures = "0.3"
+
+[features]
+# Enables the in-memory fakes (testkit module) used by integration/bdd tests.
+testkit = []
+
+[[test]]
+name = "bdd"
+path = "tests/bdd/main.rs"
+harness = false
+required-features = ["testkit"]
+
+[[test]]
+name = "property"
+path = "tests/property/main.rs"
+required-features = ["testkit"]
+
+[[test]]
+name = "integration"
+path = "tests/integration/main.rs"
+required-features = ["testkit"]
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
 
 [profile.release]
 opt-level = "z"
@@ -20,13 +74,3 @@ lto = true
 codegen-units = 1
 panic = "abort"
 strip = true
-
-[build-dependencies]
-tauri-build = { version = "2", features = [] }
-
-[dependencies]
-tauri = { version = "2", features = [] }
-tauri-plugin-opener = "2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-tauri-plugin-notification = "2"

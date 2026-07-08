@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { RouterLink, RouterView, useRouter } from "vue-router";
+import { RouterLink, RouterView, useRoute, useRouter } from "vue-router";
 
 import { useAuthStore } from "@/domains/auth/stores/authStore";
 import {
@@ -20,11 +20,29 @@ import { isThemeMode } from "@/shared/theme";
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 const themeStore = useThemeStore();
 const localeStore = useLocaleStore();
 
 const isSidebarOpen = ref(true);
+
+interface NavItem {
+  to: string;
+  labelKey: string;
+}
+
+const navItems: NavItem[] = [
+  { to: "/dashboard", labelKey: "nav.dashboard" },
+  { to: "/connections", labelKey: "nav.connections" },
+  { to: "/schedule", labelKey: "nav.schedule" },
+  { to: "/status", labelKey: "nav.status" },
+  { to: "/logs", labelKey: "nav.logs" },
+];
+
+const pageTitle = computed(() =>
+  t(typeof route.meta.titleKey === "string" ? route.meta.titleKey : "nav.dashboard")
+);
 
 const themeOptions = computed<SelectOption[]>(() =>
   themeStore.availableThemes.map((mode) => ({
@@ -74,11 +92,13 @@ async function testNotification(): Promise<void> {
       </template>
 
       <RouterLink
-        to="/dashboard"
+        v-for="item in navItems"
+        :key="item.to"
+        :to="item.to"
         class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-muted transition-colors hover:bg-surface-hover hover:text-foreground"
         active-class="bg-primary/10 !text-primary"
       >
-        {{ t("common.dashboard") }}
+        {{ t(item.labelKey) }}
       </RouterLink>
 
       <template #footer>
@@ -92,7 +112,7 @@ async function testNotification(): Promise<void> {
       <AppNavbar fixation="static" alignment="split-ends">
         <template #brand>
           <h2 class="text-sm font-bold uppercase tracking-wider text-foreground">
-            {{ t("common.dashboard") }}
+            {{ pageTitle }}
           </h2>
         </template>
 
