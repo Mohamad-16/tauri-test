@@ -1,89 +1,89 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, type Component } from 'vue'
-import * as Icons from 'lucide-vue-next'
-import { ChevronDown, Search } from 'lucide-vue-next'
-import { useI18n } from '@/shared/composables/useI18n'
-import type { SelectOption, SelectProps } from './types'
-import { selectConfig } from './config'
+import { computed, onMounted, onUnmounted, ref, type Component } from "vue";
+import * as Icons from "lucide-vue-next";
+import { ChevronDown, Search } from "lucide-vue-next";
+import { useI18n } from "@/shared/composables/useI18n";
+import type { SelectOption, SelectProps } from "./types";
+import { selectConfig } from "./config";
 
 const props = withDefaults(defineProps<SelectProps>(), {
-  variant: 'outline',
-  size: 'md',
-  label: '',
+  variant: "outline",
+  size: "md",
+  label: "",
   disabled: false,
-  error: '',
-  icon: '',
-  placeholder: '',
+  error: "",
+  icon: "",
+  placeholder: "",
   customPopper: false,
-})
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
+  (e: "update:modelValue", value: string): void;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const isOpen = ref(false)
-const searchQuery = ref('')
-const rootRef = ref<HTMLElement | null>(null)
+const isOpen = ref(false);
+const searchQuery = ref("");
+const rootRef = ref<HTMLElement | null>(null);
 
 const normalizedOptions = computed<SelectOption[]>(() => {
   return props.options.map((opt) => {
-    if (typeof opt === 'string') {
-      return { value: opt, label: opt }
+    if (typeof opt === "string") {
+      return { value: opt, label: opt };
     }
-    return opt
-  })
-})
+    return opt;
+  });
+});
 
 const filteredOptions = computed(() => {
-  if (!searchQuery.value) return normalizedOptions.value
-  return normalizedOptions.value.filter(opt =>
-    opt.label.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  )
-})
+  if (!searchQuery.value) return normalizedOptions.value;
+  return normalizedOptions.value.filter((opt) =>
+    opt.label.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
 
 const selectedLabel = computed(() => {
-  const found = normalizedOptions.value.find(opt => opt.value === props.modelValue)
-  return found ? found.label : props.modelValue
-})
+  const found = normalizedOptions.value.find((opt) => opt.value === props.modelValue);
+  return found ? found.label : props.modelValue;
+});
 
-const resolvedPlaceholder = computed(() => props.placeholder || t('core.select.placeholder'))
+const resolvedPlaceholder = computed(() => props.placeholder || t("core.select.placeholder"));
 
 const iconComponent = computed<Component | null>(() => {
-  if (!props.icon) return null
-  const iconName = props.icon as keyof typeof Icons
-  return iconName in Icons ? (Icons[iconName] as Component) : null
-})
+  if (!props.icon) return null;
+  const iconName = props.icon as keyof typeof Icons;
+  return iconName in Icons ? (Icons[iconName] as Component) : null;
+});
 
 const toggleDropdown = () => {
-  if (props.disabled) return
-  isOpen.value = !isOpen.value
+  if (props.disabled) return;
+  isOpen.value = !isOpen.value;
   if (isOpen.value) {
-    searchQuery.value = ''
+    searchQuery.value = "";
   }
-}
+};
 
 const selectOption = (value: string) => {
-  emit('update:modelValue', value)
-  isOpen.value = false
-}
+  emit("update:modelValue", value);
+  isOpen.value = false;
+};
 
 const closeOnOutsideClick = (e: MouseEvent) => {
   if (isOpen.value && rootRef.value && !rootRef.value.contains(e.target as Node)) {
-    isOpen.value = false
+    isOpen.value = false;
   }
-}
+};
 
-onMounted(() => document.addEventListener('click', closeOnOutsideClick))
-onUnmounted(() => document.removeEventListener('click', closeOnOutsideClick))
+onMounted(() => document.addEventListener("click", closeOnOutsideClick));
+onUnmounted(() => document.removeEventListener("click", closeOnOutsideClick));
 
 const selectClasses = computed(() => [
   selectConfig.base,
   selectConfig.sizes[props.size],
-  selectConfig.variants[props.variant][props.error ? 'error' : 'normal'],
+  selectConfig.variants[props.variant][props.error ? "error" : "normal"],
   props.disabled ? selectConfig.disabled : selectConfig.enabled,
-])
+]);
 </script>
 
 <template>
@@ -111,7 +111,10 @@ const selectClasses = computed(() => [
         <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none">
           <ChevronDown :class="selectConfig.chevron" />
         </div>
-        <div v-if="iconComponent" class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-subtle">
+        <div
+          v-if="iconComponent"
+          class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-subtle"
+        >
           <component :is="iconComponent" :size="16" />
         </div>
       </div>
@@ -130,7 +133,10 @@ const selectClasses = computed(() => [
           <ChevronDown :class="[selectConfig.chevron, { 'rotate-180': isOpen }]" />
         </button>
 
-        <div v-if="iconComponent" class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-subtle">
+        <div
+          v-if="iconComponent"
+          class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-subtle"
+        >
           <component :is="iconComponent" :size="16" />
         </div>
 
@@ -143,12 +149,12 @@ const selectClasses = computed(() => [
               :placeholder="t('core.select.searchPlaceholder')"
               :class="selectConfig.dropdownSearchInput"
               @click.stop
-            >
+            />
           </div>
 
           <div class="overflow-y-auto py-1 max-h-48" role="listbox">
             <div v-if="filteredOptions.length === 0" :class="selectConfig.empty">
-              {{ t('core.select.noOptions') }}
+              {{ t("core.select.noOptions") }}
             </div>
             <button
               v-for="opt in filteredOptions"
@@ -158,7 +164,9 @@ const selectClasses = computed(() => [
               :aria-selected="opt.value === modelValue"
               :class="[
                 selectConfig.option.base,
-                opt.value === modelValue ? selectConfig.option.selected : selectConfig.option.unselected,
+                opt.value === modelValue
+                  ? selectConfig.option.selected
+                  : selectConfig.option.unselected,
               ]"
               @click="selectOption(opt.value)"
             >

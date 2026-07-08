@@ -1,45 +1,45 @@
 <script setup lang="ts">
-import { watch, onMounted, onUnmounted } from 'vue'
-import { X } from 'lucide-vue-next'
-import { drawerConfig } from './config'
-import type { DrawerProps } from './types'
-import { useI18n } from '@/shared/composables/useI18n'
+import { watch, onMounted, onUnmounted } from "vue";
+import { X } from "lucide-vue-next";
+import { drawerConfig } from "./config";
+import type { DrawerProps } from "./types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<DrawerProps>(), {
-  anchor: 'slide-from-right',
-  width: 'md',
-})
+  anchor: "slide-from-right",
+  width: "md",
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  (e: "update:modelValue", value: boolean): void;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 function close() {
-  emit('update:modelValue', false)
+  emit("update:modelValue", false);
 }
 
 function handleKeyDown(e: KeyboardEvent) {
-  if (e.key === 'Escape' && props.modelValue) close()
+  if (e.key === "Escape" && props.modelValue) close();
 }
 
 watch(
   () => props.modelValue,
   (isOpen) => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
+    document.body.style.overflow = isOpen ? "hidden" : "";
   },
-  { immediate: true },
-)
+  { immediate: true }
+);
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
+  window.addEventListener("keydown", handleKeyDown);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-  document.body.style.overflow = ''
-})
+  window.removeEventListener("keydown", handleKeyDown);
+  document.body.style.overflow = "";
+});
 </script>
 
 <template>

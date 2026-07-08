@@ -31,8 +31,7 @@ async function handleLogin(): Promise<void> {
 
     await router.push("/dashboard");
   } catch (error) {
-    errorMessage.value =
-      error instanceof Error ? error.message : t("login.failed");
+    errorMessage.value = error instanceof Error ? error.message : t("login.failed");
   } finally {
     loading.value = false;
   }
@@ -40,9 +39,7 @@ async function handleLogin(): Promise<void> {
 </script>
 
 <template>
-  <div
-    class="flex min-h-screen items-center justify-center bg-background px-6 text-foreground"
-  >
+  <div class="flex min-h-screen items-center justify-center bg-background px-6 text-foreground">
     <div class="w-full max-w-md">
       <AppCard variant="elevated">
         <div class="mb-8">
@@ -86,9 +83,7 @@ async function handleLogin(): Promise<void> {
           </AppButton>
         </form>
 
-        <div
-          class="mt-8 flex justify-center border-t border-border pt-4 text-xs text-subtle"
-        >
+        <div class="mt-8 flex justify-center border-t border-border pt-4 text-xs text-subtle">
           {{ t("login.demo") }}: admin@fluxbooks.com / Password@123
         </div>
       </AppCard>

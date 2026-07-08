@@ -1,92 +1,95 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { Check, ChevronDown, Search, X } from 'lucide-vue-next'
-import type { MultiselectProps, SelectOption } from './types'
-import { multiselectConfig } from './config'
-import { useI18n } from '@/shared/composables/useI18n'
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { Check, ChevronDown, Search, X } from "lucide-vue-next";
+import type { MultiselectProps, SelectOption } from "./types";
+import { multiselectConfig } from "./config";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<MultiselectProps>(), {
-  variant: 'tags-inline',
-  size: 'md',
-  label: '',
+  variant: "tags-inline",
+  size: "md",
+  label: "",
   disabled: false,
-  placeholder: '',
-})
+  placeholder: "",
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void
-}>()
+  (e: "update:modelValue", value: string[]): void;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const rootEl = ref<HTMLElement | null>(null)
-const isOpen = ref(false)
-const searchQuery = ref('')
+const rootEl = ref<HTMLElement | null>(null);
+const isOpen = ref(false);
+const searchQuery = ref("");
 
-const placeholderText = computed(() => props.placeholder || t('core.multiselect.placeholder'))
+const placeholderText = computed(() => props.placeholder || t("core.multiselect.placeholder"));
 
 const normalizedOptions = computed<SelectOption[]>(() =>
-  props.options.map(opt => (typeof opt === 'string' ? { value: opt, label: opt } : opt)),
-)
+  props.options.map((opt) => (typeof opt === "string" ? { value: opt, label: opt } : opt))
+);
 
 const filteredOptions = computed(() => {
-  if (!searchQuery.value) return normalizedOptions.value
-  const query = searchQuery.value.toLowerCase()
-  return normalizedOptions.value.filter(opt => opt.label.toLowerCase().includes(query))
-})
+  if (!searchQuery.value) return normalizedOptions.value;
+  const query = searchQuery.value.toLowerCase();
+  return normalizedOptions.value.filter((opt) => opt.label.toLowerCase().includes(query));
+});
 
 const maxReached = computed(
-  () => props.maxItems !== undefined && props.modelValue.length >= props.maxItems,
-)
+  () => props.maxItems !== undefined && props.modelValue.length >= props.maxItems
+);
 
-const visibleCount = multiselectConfig.wrapVisibleCount
-const overflowCount = computed(() => props.modelValue.length - visibleCount)
+const visibleCount = multiselectConfig.wrapVisibleCount;
+const overflowCount = computed(() => props.modelValue.length - visibleCount);
 
 const controlClass = computed(() => [
   multiselectConfig.control,
   props.disabled
     ? multiselectConfig.controlStates.disabled
     : multiselectConfig.controlStates.normal,
-])
+]);
 
 const toggleDropdown = () => {
-  if (props.disabled) return
-  isOpen.value = !isOpen.value
-}
+  if (props.disabled) return;
+  isOpen.value = !isOpen.value;
+};
 
 const selectItem = (value: string) => {
   if (props.modelValue.includes(value)) {
-    emit('update:modelValue', props.modelValue.filter(item => item !== value))
+    emit(
+      "update:modelValue",
+      props.modelValue.filter((item) => item !== value)
+    );
   } else {
-    if (maxReached.value) return
-    emit('update:modelValue', [...props.modelValue, value])
+    if (maxReached.value) return;
+    emit("update:modelValue", [...props.modelValue, value]);
   }
-}
+};
 
 const getLabel = (value: string) => {
-  const found = normalizedOptions.value.find(opt => opt.value === value)
-  return found ? found.label : value
-}
+  const found = normalizedOptions.value.find((opt) => opt.value === value);
+  return found ? found.label : value;
+};
 
 const handleDocumentClick = (event: MouseEvent) => {
   if (isOpen.value && rootEl.value && !rootEl.value.contains(event.target as Node)) {
-    isOpen.value = false
+    isOpen.value = false;
   }
-}
+};
 
 const handleDocumentKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') isOpen.value = false
-}
+  if (event.key === "Escape") isOpen.value = false;
+};
 
 onMounted(() => {
-  document.addEventListener('click', handleDocumentClick)
-  document.addEventListener('keydown', handleDocumentKeydown)
-})
+  document.addEventListener("click", handleDocumentClick);
+  document.addEventListener("keydown", handleDocumentKeydown);
+});
 
 onBeforeUnmount(() => {
-  document.removeEventListener('click', handleDocumentClick)
-  document.removeEventListener('keydown', handleDocumentKeydown)
-})
+  document.removeEventListener("click", handleDocumentClick);
+  document.removeEventListener("keydown", handleDocumentKeydown);
+});
 </script>
 
 <template>
@@ -131,7 +134,7 @@ onBeforeUnmount(() => {
               </button>
             </div>
             <div v-if="overflowCount > 0" :class="multiselectConfig.overflowTag">
-              {{ t('core.multiselect.more', { count: overflowCount }) }}
+              {{ t("core.multiselect.more", { count: overflowCount }) }}
             </div>
           </template>
         </div>
@@ -148,16 +151,16 @@ onBeforeUnmount(() => {
             :placeholder="t('core.multiselect.searchPlaceholder')"
             :class="multiselectConfig.dropdownSearchInput"
             @click.stop
-          >
+          />
         </div>
 
         <div class="overflow-y-auto py-1 max-h-48">
           <div v-if="filteredOptions.length === 0" :class="multiselectConfig.empty">
-            {{ t('core.multiselect.noOptions') }}
+            {{ t("core.multiselect.noOptions") }}
           </div>
 
           <div v-if="maxReached" :class="multiselectConfig.maxNotice">
-            {{ t('core.multiselect.maxReached', { max: maxItems ?? 0 }) }}
+            {{ t("core.multiselect.maxReached", { max: maxItems ?? 0 }) }}
           </div>
 
           <button

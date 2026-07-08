@@ -55,7 +55,6 @@ export const useDashboardStore = defineStore("dashboard", () => {
       status: "Processing",
       time: "21 mins ago",
     },
-    
   ]);
 
   /**

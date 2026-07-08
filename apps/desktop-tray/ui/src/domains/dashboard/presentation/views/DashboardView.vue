@@ -63,9 +63,7 @@ const activeStatusFilter = ref<string>("All");
 
 const filteredClients = computed(() => {
   if (activeStatusFilter.value === "All") return clients.value;
-  return clients.value.filter(
-    (client) => client.status === activeStatusFilter.value
-  );
+  return clients.value.filter((client) => client.status === activeStatusFilter.value);
 });
 
 const statusFilterOptions = computed<SelectOption[]>(() => [
@@ -86,9 +84,7 @@ const rightsOptions = computed<SelectOption[]>(() => [
   { value: "Read", label: t("dashboard.clients.rights.read") },
 ]);
 
-const statusOptions = computed<SelectOption[]>(() =>
-  statusFilterOptions.value.slice(1)
-);
+const statusOptions = computed<SelectOption[]>(() => statusFilterOptions.value.slice(1));
 
 const clientColumns = computed<TableColumn[]>(() => [
   { key: "name", label: t("dashboard.clients.columns.name") },
@@ -160,9 +156,7 @@ function saveClient(): void {
   if (!clientForm.name.trim() || !clientForm.email.trim()) return;
 
   if (isEditingClient.value) {
-    const index = clients.value.findIndex(
-      (client) => client.id === clientForm.id
-    );
+    const index = clients.value.findIndex((client) => client.id === clientForm.id);
     if (index !== -1) clients.value[index] = { ...clientForm };
   } else {
     clients.value.unshift({ ...clientForm });
@@ -211,39 +205,61 @@ function deleteClient(id: string): void {
           {{ t("dashboard.workspace") }}
         </h3>
 
-        <p class="mt-4 text-lg font-semibold">{{ workspaceName }}</p>
+        <p class="mt-4 text-lg font-semibold">
+          {{ workspaceName }}
+        </p>
 
-        <p class="mt-2 text-sm text-muted">{{ workspaceId }}</p>
+        <p class="mt-2 text-sm text-muted">
+          {{ workspaceId }}
+        </p>
       </AppCard>
     </div>
 
     <!-- KPI -->
     <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
       <AppCard>
-        <h3 class="text-sm text-muted">{{ t("dashboard.incomingFiles") }}</h3>
-        <p class="mt-3 text-4xl font-bold">{{ incomingFiles }}</p>
+        <h3 class="text-sm text-muted">
+          {{ t("dashboard.incomingFiles") }}
+        </h3>
+        <p class="mt-3 text-4xl font-bold">
+          {{ incomingFiles }}
+        </p>
       </AppCard>
 
       <AppCard>
-        <h3 class="text-sm text-muted">{{ t("dashboard.groupedDocuments") }}</h3>
-        <p class="mt-3 text-4xl font-bold">{{ groupedDocuments }}</p>
+        <h3 class="text-sm text-muted">
+          {{ t("dashboard.groupedDocuments") }}
+        </h3>
+        <p class="mt-3 text-4xl font-bold">
+          {{ groupedDocuments }}
+        </p>
       </AppCard>
 
       <AppCard>
-        <h3 class="text-sm text-muted">{{ t("dashboard.readyForReview") }}</h3>
-        <p class="mt-3 text-4xl font-bold text-primary">{{ readyForReview }}</p>
+        <h3 class="text-sm text-muted">
+          {{ t("dashboard.readyForReview") }}
+        </h3>
+        <p class="mt-3 text-4xl font-bold text-primary">
+          {{ readyForReview }}
+        </p>
       </AppCard>
 
       <AppCard>
-        <h3 class="text-sm text-muted">{{ t("dashboard.rejectedFiles") }}</h3>
-        <p class="mt-3 text-4xl font-bold text-danger">{{ rejectedFiles }}</p>
+        <h3 class="text-sm text-muted">
+          {{ t("dashboard.rejectedFiles") }}
+        </h3>
+        <p class="mt-3 text-4xl font-bold text-danger">
+          {{ rejectedFiles }}
+        </p>
       </AppCard>
     </div>
 
     <!-- UPLOAD + PIPELINE -->
     <div class="grid gap-4 lg:grid-cols-2">
       <AppCard variant="bordered">
-        <h3 class="text-lg font-semibold">{{ t("dashboard.uploadEvidence") }}</h3>
+        <h3 class="text-lg font-semibold">
+          {{ t("dashboard.uploadEvidence") }}
+        </h3>
 
         <p class="mt-2 text-sm text-muted">
           {{ t("dashboard.uploadDescription") }}
@@ -276,7 +292,9 @@ function deleteClient(id: string): void {
     <div class="grid gap-4 lg:grid-cols-2">
       <AppCard variant="bordered" class="!p-0 overflow-hidden">
         <div class="border-b border-border p-5">
-          <h3 class="font-semibold">{{ t("dashboard.recentActivity") }}</h3>
+          <h3 class="font-semibold">
+            {{ t("dashboard.recentActivity") }}
+          </h3>
         </div>
 
         <div
@@ -286,8 +304,12 @@ function deleteClient(id: string): void {
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="font-medium">{{ activity.fileName }}</p>
-              <p class="text-sm text-muted">{{ activity.status }}</p>
+              <p class="font-medium">
+                {{ activity.fileName }}
+              </p>
+              <p class="text-sm text-muted">
+                {{ activity.status }}
+              </p>
             </div>
 
             <span class="text-xs text-subtle">{{ activity.time }}</span>
@@ -296,7 +318,9 @@ function deleteClient(id: string): void {
       </AppCard>
 
       <AppCard variant="bordered">
-        <h3 class="font-semibold">{{ t("dashboard.processingQueue") }}</h3>
+        <h3 class="font-semibold">
+          {{ t("dashboard.processingQueue") }}
+        </h3>
 
         <div class="mt-5 space-y-3">
           <div
@@ -312,18 +336,22 @@ function deleteClient(id: string): void {
 
     <!-- REVIEW BACKLOG -->
     <AppCard>
-      <h3 class="text-sm text-muted">{{ t("dashboard.reviewBacklog") }}</h3>
+      <h3 class="text-sm text-muted">
+        {{ t("dashboard.reviewBacklog") }}
+      </h3>
 
-      <p class="mt-3 text-5xl font-bold text-warning">{{ reviewBacklog }}</p>
+      <p class="mt-3 text-5xl font-bold text-warning">
+        {{ reviewBacklog }}
+      </p>
 
-      <p class="mt-2 text-sm text-muted">{{ t("dashboard.documentBacklog") }}</p>
+      <p class="mt-2 text-sm text-muted">
+        {{ t("dashboard.documentBacklog") }}
+      </p>
     </AppCard>
 
     <!-- FIRM ADMIN -> CLIENTS (mock CRUD) -->
     <AppCard variant="bordered">
-      <div
-        class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
-      >
+      <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
           <h3 class="text-lg font-semibold">
             {{ t("dashboard.clients.title") }}
@@ -335,11 +363,7 @@ function deleteClient(id: string): void {
 
         <div class="flex items-center gap-2">
           <div class="w-40">
-            <AppSelect
-              v-model="activeStatusFilter"
-              :options="statusFilterOptions"
-              size="sm"
-            />
+            <AppSelect v-model="activeStatusFilter" :options="statusFilterOptions" size="sm" />
           </div>
 
           <AppButton size="sm" icon="Plus" @click="openCreateClient">
@@ -349,11 +373,7 @@ function deleteClient(id: string): void {
       </div>
 
       <div class="mt-6">
-        <AppDataTable
-          :columns="clientColumns"
-          :items="filteredClients"
-          density="compact"
-        >
+        <AppDataTable :columns="clientColumns" :items="filteredClients" density="compact">
           <template #cell(role)="{ item }">
             <span class="text-sm">{{ roleLabel(String(item.role)) }}</span>
           </template>
@@ -383,11 +403,7 @@ function deleteClient(id: string): void {
                 {{ t("dashboard.clients.editAction") }}
               </AppButton>
 
-              <AppButton
-                variant="danger"
-                size="sm"
-                @click.stop="deleteClient(String(item.id))"
-              >
+              <AppButton variant="danger" size="sm" @click.stop="deleteClient(String(item.id))">
                 {{ t("dashboard.clients.deleteAction") }}
               </AppButton>
             </div>
@@ -398,16 +414,10 @@ function deleteClient(id: string): void {
       <!-- Inline form -->
       <div v-if="isClientFormVisible" class="mt-6">
         <AppCard>
-          <div
-            class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
-          >
+          <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
               <h4 class="text-sm font-semibold text-foreground">
-                {{
-                  isEditingClient
-                    ? t("dashboard.clients.edit")
-                    : t("dashboard.clients.add")
-                }}
+                {{ isEditingClient ? t("dashboard.clients.edit") : t("dashboard.clients.add") }}
               </h4>
               <p class="mt-1 text-xs text-subtle">
                 {{ t("dashboard.clients.formHint") }}

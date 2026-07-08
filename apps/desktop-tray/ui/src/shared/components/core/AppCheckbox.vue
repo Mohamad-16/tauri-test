@@ -1,45 +1,42 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import type { CheckboxProps } from './types'
-import { checkboxConfig } from './config'
+import { onMounted, ref, watch } from "vue";
+import type { CheckboxProps } from "./types";
+import { checkboxConfig } from "./config";
 
 const props = withDefaults(defineProps<CheckboxProps>(), {
   modelValue: false,
   indeterminate: false,
-  size: 'md',
-  color: 'primary',
+  size: "md",
+  color: "primary",
   disabled: false,
-  label: '',
-  description: '',
-})
+  label: "",
+  description: "",
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  (e: "update:modelValue", value: boolean): void;
+}>();
 
-const checkboxRef = ref<HTMLInputElement | null>(null)
+const checkboxRef = ref<HTMLInputElement | null>(null);
 
 const updateIndeterminate = () => {
   if (checkboxRef.value) {
-    checkboxRef.value.indeterminate = props.indeterminate
+    checkboxRef.value.indeterminate = props.indeterminate;
   }
-}
+};
 
-watch(() => props.indeterminate, updateIndeterminate)
-onMounted(updateIndeterminate)
+watch(() => props.indeterminate, updateIndeterminate);
+onMounted(updateIndeterminate);
 
 const toggleCheck = () => {
-  if (props.disabled) return
-  emit('update:modelValue', !props.modelValue)
-}
+  if (props.disabled) return;
+  emit("update:modelValue", !props.modelValue);
+};
 </script>
 
 <template>
   <div
-    :class="[
-      checkboxConfig.wrapper,
-      disabled ? checkboxConfig.disabled : checkboxConfig.enabled,
-    ]"
+    :class="[checkboxConfig.wrapper, disabled ? checkboxConfig.disabled : checkboxConfig.enabled]"
     @click="toggleCheck"
   >
     <div class="flex items-center h-5">
@@ -48,14 +45,10 @@ const toggleCheck = () => {
         type="checkbox"
         :checked="modelValue"
         :disabled="disabled"
-        :class="[
-          checkboxConfig.input,
-          checkboxConfig.colors[color],
-          checkboxConfig.sizes[size],
-        ]"
+        :class="[checkboxConfig.input, checkboxConfig.colors[color], checkboxConfig.sizes[size]]"
         @click.stop
         @change="emit('update:modelValue', ($event.target as HTMLInputElement).checked)"
-      >
+      />
     </div>
 
     <div v-if="label || description" class="space-y-0.5">

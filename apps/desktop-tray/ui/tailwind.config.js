@@ -80,8 +80,7 @@ export default {
       addUtilities({
         ".scrollbar-thin": {
           "scrollbar-width": "thin",
-          "scrollbar-color":
-            "rgb(var(--color-border-strong)) rgb(var(--color-surface-muted))",
+          "scrollbar-color": "rgb(var(--color-border-strong)) rgb(var(--color-surface-muted))",
         },
       });
     }),

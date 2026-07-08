@@ -13,20 +13,20 @@ const { status } = storeToRefs(statusStore);
 <template>
   <AppCard variant="bordered">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold">{{ t("status.title") }}</h3>
+      <h3 class="text-lg font-semibold">
+        {{ t("status.title") }}
+      </h3>
       <AppStatusPill
         :type="status.connectivity === 'online' ? 'success' : 'danger'"
         variant="border-only"
-        :text="
-          status.connectivity === 'online' ? t('status.online') : t('status.offline')
-        "
+        :text="status.connectivity === 'online' ? t('status.online') : t('status.offline')"
       />
     </div>
 
-    <p class="mt-2 text-sm text-muted">{{ t("status.description") }}</p>
-
-    <p class="mt-4 text-xs text-subtle">
-      {{ t("status.appVersion") }}: {{ status.appVersion }}
+    <p class="mt-2 text-sm text-muted">
+      {{ t("status.description") }}
     </p>
+
+    <p class="mt-4 text-xs text-subtle">{{ t("status.appVersion") }}: {{ status.appVersion }}</p>
   </AppCard>
 </template>

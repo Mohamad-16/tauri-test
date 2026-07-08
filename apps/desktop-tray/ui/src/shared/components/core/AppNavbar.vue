@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { navbarConfig } from './config'
-import type { NavbarProps } from './types'
+import { navbarConfig } from "./config";
+import type { NavbarProps } from "./types";
 
 withDefaults(defineProps<NavbarProps>(), {
-  fixation: 'static',
-  alignment: 'split-ends',
-})
+  fixation: "static",
+  alignment: "split-ends",
+});
 </script>
 
 <template>
@@ -13,7 +13,10 @@ withDefaults(defineProps<NavbarProps>(), {
     <div :class="[navbarConfig.inner, navbarConfig.alignments[alignment]]">
       <!-- Ordering utilities below are structural (slot placement per alignment), not themable -->
       <div
-        :class="[navbarConfig.brand, alignment === 'centered-brand' ? 'justify-self-center order-2' : '']"
+        :class="[
+          navbarConfig.brand,
+          alignment === 'centered-brand' ? 'justify-self-center order-2' : '',
+        ]"
       >
         <slot name="brand" />
       </div>
@@ -29,7 +32,10 @@ withDefaults(defineProps<NavbarProps>(), {
       </div>
 
       <div
-        :class="[navbarConfig.actions, alignment === 'centered-brand' ? 'justify-self-end order-3' : '']"
+        :class="[
+          navbarConfig.actions,
+          alignment === 'centered-brand' ? 'justify-self-end order-3' : '',
+        ]"
       >
         <slot name="actions" />
       </div>

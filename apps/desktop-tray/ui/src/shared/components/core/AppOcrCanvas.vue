@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { ZoomIn, ZoomOut, RefreshCw, Eye, Layers } from 'lucide-vue-next'
-import { ocrCanvasConfig } from './config'
-import type { OcrCanvasProps } from './types'
-import { useI18n } from '@/shared/composables/useI18n'
+import { computed, ref } from "vue";
+import { ZoomIn, ZoomOut, RefreshCw, Eye, Layers } from "lucide-vue-next";
+import { ocrCanvasConfig } from "./config";
+import type { OcrCanvasProps } from "./types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<OcrCanvasProps>(), {
   boxes: () => [],
-})
+});
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const zoomLevel = ref(1)
-const showBoxes = ref(true)
-const hoveredBox = ref<string | null>(null)
+const zoomLevel = ref(1);
+const showBoxes = ref(true);
+const hoveredBox = ref<string | null>(null);
 
-const { min, max, step } = ocrCanvasConfig.zoom
+const { min, max, step } = ocrCanvasConfig.zoom;
 
 function handleZoomIn() {
-  zoomLevel.value = Math.min(max, zoomLevel.value + step)
+  zoomLevel.value = Math.min(max, zoomLevel.value + step);
 }
 
 function handleZoomOut() {
-  zoomLevel.value = Math.max(min, zoomLevel.value - step)
+  zoomLevel.value = Math.max(min, zoomLevel.value - step);
 }
 
 function resetZoom() {
-  zoomLevel.value = 1
+  zoomLevel.value = 1;
 }
 
 const matchedName = computed(
-  () => props.boxes.find((box) => box.id === hoveredBox.value)?.name ?? '',
-)
+  () => props.boxes.find((box) => box.id === hoveredBox.value)?.name ?? ""
+);
 </script>
 
 <template>
@@ -81,7 +81,7 @@ const matchedName = computed(
           @click="showBoxes = !showBoxes"
         >
           <Layers class="w-3.5 h-3.5" />
-          <span>{{ showBoxes ? t('core.ocr.boxesOn') : t('core.ocr.boxesOff') }}</span>
+          <span>{{ showBoxes ? t("core.ocr.boxesOn") : t("core.ocr.boxesOff") }}</span>
         </button>
       </div>
     </div>
@@ -116,10 +116,10 @@ const matchedName = computed(
     <div :class="ocrCanvasConfig.footer">
       <div class="flex items-center gap-1.5">
         <Eye class="w-3.5 h-3.5" />
-        <span>{{ t('core.ocr.hoverHint') }}</span>
+        <span>{{ t("core.ocr.hoverHint") }}</span>
       </div>
       <div v-if="hoveredBox" :class="ocrCanvasConfig.matched">
-        {{ t('core.ocr.matched', { name: matchedName }) }}
+        {{ t("core.ocr.matched", { name: matchedName }) }}
       </div>
     </div>
   </div>

@@ -1,23 +1,23 @@
 <script setup lang="ts">
-import type { RadioProps } from './types'
-import { radioConfig } from './config'
+import type { RadioProps } from "./types";
+import { radioConfig } from "./config";
 
 const props = withDefaults(defineProps<RadioProps>(), {
-  size: 'md',
-  color: 'primary',
-  layout: 'vertical-stack',
+  size: "md",
+  color: "primary",
+  layout: "vertical-stack",
   disabled: false,
-  label: '',
-})
+  label: "",
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
+  (e: "update:modelValue", value: string): void;
+}>();
 
 const selectOption = (val: string) => {
-  if (props.disabled) return
-  emit('update:modelValue', val)
-}
+  if (props.disabled) return;
+  emit("update:modelValue", val);
+};
 </script>
 
 <template>
@@ -44,19 +44,19 @@ const selectOption = (val: string) => {
             :value="opt.value"
             :checked="modelValue === opt.value"
             :disabled="disabled"
-            :class="[
-              radioConfig.input,
-              radioConfig.colors[color],
-              radioConfig.sizes[size],
-            ]"
+            :class="[radioConfig.input, radioConfig.colors[color], radioConfig.sizes[size]]"
             @change="emit('update:modelValue', opt.value)"
-          >
+          />
         </div>
 
         <div class="space-y-0.5">
           <span
             class="text-xs font-bold block"
-            :class="modelValue === opt.value ? radioConfig.optionLabel.selected : radioConfig.optionLabel.unselected"
+            :class="
+              modelValue === opt.value
+                ? radioConfig.optionLabel.selected
+                : radioConfig.optionLabel.unselected
+            "
           >
             {{ opt.label }}
           </span>

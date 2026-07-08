@@ -1,75 +1,81 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { ArrowUpDown, ChevronDown, ChevronRight } from 'lucide-vue-next'
-import AppCheckbox from './AppCheckbox.vue'
-import type { DataTableProps } from './types'
-import { dataTableConfig } from './config'
-import { useI18n } from '@/shared/composables/useI18n'
+import { computed, ref } from "vue";
+import { ArrowUpDown, ChevronDown, ChevronRight } from "lucide-vue-next";
+import AppCheckbox from "./AppCheckbox.vue";
+import type { DataTableProps } from "./types";
+import { dataTableConfig } from "./config";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<DataTableProps>(), {
-  density: 'comfortable',
+  density: "comfortable",
   striped: false,
   selectable: false,
   selectedKeys: () => [],
   expandable: false,
-})
+});
 
 const emit = defineEmits<{
-  (e: 'update:selectedKeys', keys: string[]): void
-  (e: 'row-click', item: Record<string, unknown>): void
-  (e: 'sort', key: string): void
-}>()
+  (e: "update:selectedKeys", keys: string[]): void;
+  (e: "row-click", item: Record<string, unknown>): void;
+  (e: "sort", key: string): void;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-const expandedRows = ref<string[]>([])
+const expandedRows = ref<string[]>([]);
 
 const toggleExpand = (rowId: string) => {
   if (expandedRows.value.includes(rowId)) {
-    expandedRows.value = expandedRows.value.filter(id => id !== rowId)
+    expandedRows.value = expandedRows.value.filter((id) => id !== rowId);
   } else {
-    expandedRows.value.push(rowId)
+    expandedRows.value.push(rowId);
   }
-}
+};
 
 const allSelected = computed(
-  () => props.items.length > 0 && props.selectedKeys.length === props.items.length,
-)
+  () => props.items.length > 0 && props.selectedKeys.length === props.items.length
+);
 
 const someSelected = computed(
-  () => props.selectedKeys.length > 0 && props.selectedKeys.length < props.items.length,
-)
+  () => props.selectedKeys.length > 0 && props.selectedKeys.length < props.items.length
+);
 
 const getItemKey = (item: Record<string, unknown>, fallbackIndex = 0): string => {
-  const key = item.id ?? item.key ?? fallbackIndex
-  return String(key)
-}
+  const key = item.id ?? item.key ?? fallbackIndex;
+  return String(key);
+};
 
 const toggleSelectAll = (checked: boolean) => {
   if (checked) {
-    emit('update:selectedKeys', props.items.map((item, idx) => getItemKey(item, idx)))
+    emit(
+      "update:selectedKeys",
+      props.items.map((item, idx) => getItemKey(item, idx))
+    );
   } else {
-    emit('update:selectedKeys', [])
+    emit("update:selectedKeys", []);
   }
-}
+};
 
 const toggleSelectRow = (rowId: string, checked: boolean) => {
   if (checked) {
-    emit('update:selectedKeys', [...props.selectedKeys, rowId])
+    emit("update:selectedKeys", [...props.selectedKeys, rowId]);
   } else {
-    emit('update:selectedKeys', props.selectedKeys.filter(key => key !== rowId))
+    emit(
+      "update:selectedKeys",
+      props.selectedKeys.filter((key) => key !== rowId)
+    );
   }
-}
+};
 
 const colSpanCount = computed(
-  () => props.columns.length + (props.selectable ? 1 : 0) + (props.expandable ? 1 : 0),
-)
+  () => props.columns.length + (props.selectable ? 1 : 0) + (props.expandable ? 1 : 0)
+);
 
 const rowClass = (item: Record<string, unknown>, idx: number) => [
   dataTableConfig.row.base,
-  props.selectedKeys.includes(getItemKey(item, idx)) ? dataTableConfig.row.selected : '',
-  props.striped && idx % 2 === 1 ? dataTableConfig.row.striped : '',
-]
+  props.selectedKeys.includes(getItemKey(item, idx)) ? dataTableConfig.row.selected : "",
+  props.striped && idx % 2 === 1 ? dataTableConfig.row.striped : "",
+];
 </script>
 
 <template>
@@ -160,7 +166,7 @@ const rowClass = (item: Record<string, unknown>, idx: number) => [
 
           <tr v-if="items.length === 0">
             <td :colspan="colSpanCount" :class="dataTableConfig.empty">
-              {{ t('core.table.empty') }}
+              {{ t("core.table.empty") }}
             </td>
           </tr>
         </tbody>

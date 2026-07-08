@@ -9,8 +9,7 @@ export class AuthService {
       throw new Error("Invalid email or password");
     }
 
-    document.cookie =
-      "fluxbooks_session=authenticated; path=/; SameSite=Strict";
+    document.cookie = "fluxbooks_session=authenticated; path=/; SameSite=Strict";
 
     return {
       name: "FluxBooks Admin",

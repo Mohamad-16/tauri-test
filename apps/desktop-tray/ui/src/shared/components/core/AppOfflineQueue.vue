@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { computed, type Component } from 'vue'
-import { Cloud, CloudLightning, Database, Wifi, WifiOff } from 'lucide-vue-next'
-import { offlineQueueConfig } from './config'
-import type { OfflineQueueProps } from './types'
-import { useI18n } from '@/shared/composables/useI18n'
+import { computed, type Component } from "vue";
+import { Cloud, CloudLightning, Database, Wifi, WifiOff } from "lucide-vue-next";
+import { offlineQueueConfig } from "./config";
+import type { OfflineQueueProps } from "./types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<OfflineQueueProps>(), {
   pendingCount: 0,
-})
+});
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 // Static map resolving offlineQueueConfig.statuses[*].iconName to components.
-const statusIcons: Record<string, Component> = { Cloud, CloudLightning, Database }
+const statusIcons: Record<string, Component> = { Cloud, CloudLightning, Database };
 
-const statusConfig = computed(() => offlineQueueConfig.statuses[props.status])
-const statusIcon = computed<Component>(() => statusIcons[statusConfig.value.iconName] ?? Cloud)
+const statusConfig = computed(() => offlineQueueConfig.statuses[props.status]);
+const statusIcon = computed<Component>(() => statusIcons[statusConfig.value.iconName] ?? Cloud);
 
-const isOffline = computed(() => props.status === 'local-cache-warning')
+const isOffline = computed(() => props.status === "local-cache-warning");
 
 const title = computed(() => {
-  if (props.status === 'pending-upload') return t('core.offlineQueue.pendingTitle')
-  if (props.status === 'local-cache-warning') return t('core.offlineQueue.cacheTitle')
-  return t('core.offlineQueue.clearTitle')
-})
+  if (props.status === "pending-upload") return t("core.offlineQueue.pendingTitle");
+  if (props.status === "local-cache-warning") return t("core.offlineQueue.cacheTitle");
+  return t("core.offlineQueue.clearTitle");
+});
 
 const body = computed(() => {
-  if (props.status === 'pending-upload') {
-    return t('core.offlineQueue.pendingBody', { count: props.pendingCount })
+  if (props.status === "pending-upload") {
+    return t("core.offlineQueue.pendingBody", { count: props.pendingCount });
   }
-  if (props.status === 'local-cache-warning') {
-    return t('core.offlineQueue.cacheBody', { count: props.pendingCount })
+  if (props.status === "local-cache-warning") {
+    return t("core.offlineQueue.cacheBody", { count: props.pendingCount });
   }
-  return t('core.offlineQueue.clearBody')
-})
+  return t("core.offlineQueue.clearBody");
+});
 </script>
 
 <template>
@@ -48,12 +48,16 @@ const body = computed(() => {
         <div
           :class="[
             offlineQueueConfig.connectionPill,
-            isOffline ? offlineQueueConfig.connection.offline : offlineQueueConfig.connection.online,
+            isOffline
+              ? offlineQueueConfig.connection.offline
+              : offlineQueueConfig.connection.online,
           ]"
         >
           <WifiOff v-if="isOffline" class="w-3 h-3" />
           <Wifi v-else class="w-3 h-3" />
-          <span>{{ isOffline ? t('core.offlineQueue.offlineLabel') : t('core.offlineQueue.onlineLabel') }}</span>
+          <span>{{
+            isOffline ? t("core.offlineQueue.offlineLabel") : t("core.offlineQueue.onlineLabel")
+          }}</span>
         </div>
       </div>
       <p :class="offlineQueueConfig.body">

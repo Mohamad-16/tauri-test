@@ -1,42 +1,38 @@
 <script setup lang="ts">
-import { computed, type Component } from 'vue'
-import * as Icons from 'lucide-vue-next'
-import type { ButtonProps } from './types'
-import { buttonConfig } from './config'
+import { computed, type Component } from "vue";
+import * as Icons from "lucide-vue-next";
+import type { ButtonProps } from "./types";
+import { buttonConfig } from "./config";
 
 const props = withDefaults(defineProps<ButtonProps>(), {
   variant: buttonConfig.defaults.variant,
   size: buttonConfig.defaults.size,
   isLoading: false,
   disabled: false,
-  icon: '',
+  icon: "",
   iconPosition: buttonConfig.defaults.iconPosition,
   type: buttonConfig.defaults.type,
   block: false,
-})
+});
 
 const iconComponent = computed<Component | null>(() => {
-  if (!props.icon) return null
-  const iconName = props.icon as keyof typeof Icons
-  return iconName in Icons ? (Icons[iconName] as Component) : null
-})
+  if (!props.icon) return null;
+  const iconName = props.icon as keyof typeof Icons;
+  return iconName in Icons ? (Icons[iconName] as Component) : null;
+});
 
-const iconSize = computed(() => buttonConfig.iconSizes[props.size])
+const iconSize = computed(() => buttonConfig.iconSizes[props.size]);
 
 const buttonClasses = computed(() => [
   buttonConfig.base,
   buttonConfig.variants[props.variant],
   buttonConfig.sizes[props.size],
-  props.block ? buttonConfig.block : '',
-])
+  props.block ? buttonConfig.block : "",
+]);
 </script>
 
 <template>
-  <button
-    :type="type"
-    :disabled="disabled || isLoading"
-    :class="buttonClasses"
-  >
+  <button :type="type" :disabled="disabled || isLoading" :class="buttonClasses">
     <div
       v-if="isLoading"
       :class="[

@@ -18,9 +18,7 @@ export const SUPPORTED_LOCALES: LocaleDefinition[] = [
 export const DEFAULT_LOCALE: LocaleCode = "en";
 
 export const isLocaleCode = (value: unknown): value is LocaleCode =>
-  typeof value === "string" &&
-  SUPPORTED_LOCALES.some((locale) => locale.code === value);
+  typeof value === "string" && SUPPORTED_LOCALES.some((locale) => locale.code === value);
 
 export const getLocaleDefinition = (code: LocaleCode): LocaleDefinition =>
-  SUPPORTED_LOCALES.find((locale) => locale.code === code) ??
-  SUPPORTED_LOCALES[0];
+  SUPPORTED_LOCALES.find((locale) => locale.code === code) ?? SUPPORTED_LOCALES[0];

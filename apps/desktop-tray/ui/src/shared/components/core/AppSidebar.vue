@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { ChevronLeft, Menu } from 'lucide-vue-next'
-import { sidebarConfig } from './config'
-import type { SidebarProps } from './types'
-import { useI18n } from '@/shared/composables/useI18n'
+import { computed } from "vue";
+import { ChevronLeft, Menu } from "lucide-vue-next";
+import { sidebarConfig } from "./config";
+import type { SidebarProps } from "./types";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<SidebarProps>(), {
-  layoutStyle: 'collapsible',
-})
+  layoutStyle: "collapsible",
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: boolean): void
-}>()
+  (e: "update:modelValue", value: boolean): void;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 function toggle() {
-  emit('update:modelValue', !props.modelValue)
+  emit("update:modelValue", !props.modelValue);
 }
 
 const widthClasses = computed(() => {
-  if (props.layoutStyle === 'mini-icon-rail') return sidebarConfig.widths.mini
-  if (props.layoutStyle === 'collapsible') {
-    return props.modelValue ? sidebarConfig.widths.expanded : sidebarConfig.widths.collapsed
+  if (props.layoutStyle === "mini-icon-rail") return sidebarConfig.widths.mini;
+  if (props.layoutStyle === "collapsible") {
+    return props.modelValue ? sidebarConfig.widths.expanded : sidebarConfig.widths.collapsed;
   }
-  return props.modelValue ? sidebarConfig.widths.expanded : sidebarConfig.widths.mini
-})
+  return props.modelValue ? sidebarConfig.widths.expanded : sidebarConfig.widths.mini;
+});
 </script>
 
 <template>

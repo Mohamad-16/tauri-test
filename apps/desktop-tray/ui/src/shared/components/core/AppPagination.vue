@@ -1,50 +1,50 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import type { PaginationProps } from './types'
-import { paginationConfig } from './config'
-import { useI18n } from '@/shared/composables/useI18n'
+import { computed } from "vue";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import type { PaginationProps } from "./types";
+import { paginationConfig } from "./config";
+import { useI18n } from "@/shared/composables/useI18n";
 
 const props = withDefaults(defineProps<PaginationProps>(), {
-  variant: 'numeric-steps',
-  size: 'md',
-})
+  variant: "numeric-steps",
+  size: "md",
+});
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: number): void
-}>()
+  (e: "update:modelValue", value: number): void;
+}>();
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const setPage = (page: number) => {
-  if (page < 1 || page > props.totalPages) return
-  emit('update:modelValue', page)
-}
+  if (page < 1 || page > props.totalPages) return;
+  emit("update:modelValue", page);
+};
 
-const visiblePages = computed<(number | '...')[]>(() => {
-  const current = props.modelValue
-  const total = props.totalPages
+const visiblePages = computed<(number | "...")[]>(() => {
+  const current = props.modelValue;
+  const total = props.totalPages;
 
   if (total <= 5) {
-    return Array.from({ length: total }, (_, i) => i + 1)
+    return Array.from({ length: total }, (_, i) => i + 1);
   }
 
   if (current <= 3) {
-    return [1, 2, 3, '...', total]
+    return [1, 2, 3, "...", total];
   }
   if (current >= total - 2) {
-    return [1, '...', total - 2, total - 1, total]
+    return [1, "...", total - 2, total - 1, total];
   }
-  return [1, '...', current, '...', total]
-})
+  return [1, "...", current, "...", total];
+});
 </script>
 
 <template>
   <nav :class="paginationConfig.wrapper">
     <span :class="paginationConfig.metrics">
-      {{ t('core.pagination.page') }}
+      {{ t("core.pagination.page") }}
       <span :class="paginationConfig.metricsValue">{{ modelValue }}</span>
-      {{ t('core.pagination.of') }}
+      {{ t("core.pagination.of") }}
       <span :class="paginationConfig.metricsValue">{{ totalPages }}</span>
     </span>
 
@@ -57,7 +57,7 @@ const visiblePages = computed<(number | '...')[]>(() => {
           @click="setPage(modelValue - 1)"
         >
           <ChevronLeft class="w-3.5 h-3.5" />
-          <span>{{ t('core.pagination.prev') }}</span>
+          <span>{{ t("core.pagination.prev") }}</span>
         </button>
 
         <button
@@ -66,7 +66,7 @@ const visiblePages = computed<(number | '...')[]>(() => {
           :class="[paginationConfig.arrowButton, paginationConfig.arrowSizes[size]]"
           @click="setPage(modelValue + 1)"
         >
-          <span>{{ t('core.pagination.next') }}</span>
+          <span>{{ t("core.pagination.next") }}</span>
           <ChevronRight class="w-3.5 h-3.5" />
         </button>
       </template>
@@ -84,9 +84,7 @@ const visiblePages = computed<(number | '...')[]>(() => {
 
         <div class="flex items-center gap-1">
           <template v-for="(p, index) in visiblePages" :key="index">
-            <span v-if="p === '...'" :class="paginationConfig.ellipsis">
-              ...
-            </span>
+            <span v-if="p === '...'" :class="paginationConfig.ellipsis"> ... </span>
             <button
               v-else
               type="button"

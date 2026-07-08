@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { tooltipConfig } from './config'
-import type { TooltipProps } from './types'
+import { ref } from "vue";
+import { tooltipConfig } from "./config";
+import type { TooltipProps } from "./types";
 
 withDefaults(defineProps<TooltipProps>(), {
-  position: 'top',
-})
+  position: "top",
+});
 
-const isVisible = ref(false)
+const isVisible = ref(false);
 </script>
 
 <template>

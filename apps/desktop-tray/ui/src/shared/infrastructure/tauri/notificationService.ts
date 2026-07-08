@@ -4,11 +4,7 @@ import {
   sendNotification,
 } from "@tauri-apps/plugin-notification";
 
-export async function showNotification(
-  title: string,
-  body: string,
-  icon?: string
-): Promise<void> {
+export async function showNotification(title: string, body: string, icon?: string): Promise<void> {
   let permissionGranted = await isPermissionGranted();
 
   if (!permissionGranted) {
