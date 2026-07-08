@@ -1,35 +1,198 @@
 {
-  "common.dashboard": "Tableau de bord",
-  "common.logout": "Déconnexion",
-  "common.connected": "Connecté",
-  "common.test": "Test",
-
-  "login.title": "FluxBooks",
-  "login.subtitle": "Client de comptabilité alimenté par IA",
-  "login.email": "Email",
-  "login.password": "Mot de passe",
-  "login.signin": "Connexion",
-  "login.signingin": "Connexion...",
-  "login.demo": "Identifiants de démonstration",
-
-  "dashboard.evidenceHealth": "Santé des preuves",
-  "dashboard.connectionStatus": "État de connexion",
-  "dashboard.workspace": "Espace de travail",
-  "dashboard.incomingFiles": "Fichiers entrants",
-  "dashboard.groupedDocuments": "Documents groupés",
-  "dashboard.readyForReview": "Prêt pour révision",
-  "dashboard.rejectedFiles": "Fichiers rejetés",
-  "dashboard.uploadEvidence": "Télécharger les preuves",
-  "dashboard.uploadFiles": "Télécharger les fichiers",
-  "dashboard.processingPipeline": "Pipeline de traitement",
-  "dashboard.recentActivity": "Activité récente",
-  "dashboard.processingQueue": "File IA",
-  "dashboard.reviewBacklog": "File de révision humaine",
-  "dashboard.successfullyProcessedEvidence": "Preuves traitées avec succès",
-  "dashboard.uploadDescription": "Télécharger des factures, des recettes et des documents supplémentaires.",
-  "dashboard.incoming": "Entrant",
-  "dashboard.grouped": "Groupé",
-  "dashboard.review": "Prêt pour révision",
-  "dashboard.rejected": "Rejeté",
-  "dashboard.documentBacklog": "Groupes de documents en attente de vérification manuelle."
+  "common": {
+    "appName": "FluxBooks",
+    "tagline": "Client Tray",
+    "dashboard": "Tableau de bord",
+    "logout": "Déconnexion",
+    "connected": "Connecté",
+    "test": "Test"
+  },
+  "theme": {
+    "label": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "custom": "Personnalisé"
+  },
+  "language": {
+    "label": "Langue"
+  },
+  "login": {
+    "logo": "FB",
+    "title": "FluxBooks Tray",
+    "subtitle": "Client de comptabilité propulsé par IA",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "signin": "Se connecter",
+    "signingin": "Connexion en cours...",
+    "demo": "Identifiants de démonstration",
+    "failed": "Échec de la connexion"
+  },
+  "dashboard": {
+    "evidenceHealth": "Santé des justificatifs",
+    "connectionStatus": "État de la connexion",
+    "lastSync": "Dernière synchro : {time}",
+    "workspace": "Espace de travail",
+    "incomingFiles": "Fichiers entrants",
+    "groupedDocuments": "Documents groupés",
+    "readyForReview": "Prêts pour révision",
+    "rejectedFiles": "Fichiers rejetés",
+    "uploadEvidence": "Téléverser des justificatifs",
+    "uploadFiles": "Téléverser des fichiers",
+    "processingPipeline": "Chaîne de traitement",
+    "recentActivity": "Activité récente",
+    "processingQueue": "File de traitement IA",
+    "reviewBacklog": "File de révision humaine",
+    "successfullyProcessedEvidence": "Justificatifs traités avec succès",
+    "uploadDescription": "Téléversez factures, reçus et pièces justificatives.",
+    "incoming": "Entrants",
+    "grouped": "Groupés",
+    "review": "Prêts pour révision",
+    "rejected": "Rejetés",
+    "documentBacklog": "Groupes de documents en attente de vérification manuelle.",
+    "clients": {
+      "title": "Admin Cabinet → Clients",
+      "subtitle": "Gérez les utilisateurs du cabinet et leurs accès clients.",
+      "add": "Ajouter un client",
+      "edit": "Modifier le client",
+      "editAction": "Modifier",
+      "deleteAction": "Supprimer",
+      "save": "Enregistrer",
+      "reset": "Réinitialiser",
+      "formHint": "CRUD fictif pour l'admin du cabinet.",
+      "empty": "Aucun client trouvé.",
+      "columns": {
+        "name": "Client",
+        "email": "E-mail",
+        "role": "Rôle",
+        "rights": "Droits",
+        "status": "Statut",
+        "createdAt": "Créé le",
+        "actions": "Actions"
+      },
+      "fields": {
+        "name": "Nom du client",
+        "namePlaceholder": "ex. Apex Trading LLC",
+        "email": "E-mail",
+        "emailPlaceholder": "client@entreprise.com",
+        "role": "Rôle",
+        "rights": "Droits",
+        "status": "Statut",
+        "createdAt": "Créé le",
+        "id": "ID"
+      },
+      "filters": {
+        "all": "Tous"
+      },
+      "statuses": {
+        "active": "Actif",
+        "invited": "Invité",
+        "suspended": "Suspendu"
+      },
+      "roles": {
+        "firmAdmin": "Admin cabinet",
+        "clientAdmin": "Admin client",
+        "clientUser": "Utilisateur client"
+      },
+      "rights": {
+        "full": "Accès complet",
+        "read": "Lecture seule"
+      }
+    }
+  },
+  "core": {
+    "avatar": {
+      "alt": "Avatar de l'utilisateur"
+    },
+    "breadcrumb": {
+      "label": "Fil d'Ariane"
+    },
+    "datepicker": {
+      "months": "Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre",
+      "weekdays": "Di,Lu,Ma,Me,Je,Ve,Sa",
+      "prevMonth": "Mois précédent",
+      "nextMonth": "Mois suivant",
+      "selectDate": "Choisir une date",
+      "selectRange": "Choisir une période",
+      "rangeSeparator": "→",
+      "periodLocked": "Période verrouillée"
+    },
+    "dialog": {
+      "defaultTitle": "Boîte de dialogue",
+      "close": "Fermer la boîte de dialogue"
+    },
+    "drawer": {
+      "close": "Fermer le panneau"
+    },
+    "input": {
+      "togglePassword": "Afficher/masquer le mot de passe"
+    },
+    "multiselect": {
+      "placeholder": "Sélectionner des options...",
+      "searchPlaceholder": "Rechercher des options...",
+      "noOptions": "Aucune option trouvée",
+      "more": "+{count} de plus",
+      "maxReached": "Maximum de {max} éléments sélectionnés"
+    },
+    "ocr": {
+      "zoomIn": "Zoom avant",
+      "zoomOut": "Zoom arrière",
+      "resetZoom": "Réinitialiser le zoom",
+      "boxesOn": "Zones activées",
+      "boxesOff": "Zones désactivées",
+      "hoverHint": "Survolez une zone surlignée pour inspecter le texte extrait",
+      "matched": "Correspondance : {name}"
+    },
+    "offlineQueue": {
+      "clearTitle": "Tout est synchronisé",
+      "clearBody": "Tous les documents ont été envoyés vers le cloud.",
+      "pendingTitle": "File d'envoi",
+      "pendingBody": "{count} documents en attente de synchronisation.",
+      "cacheTitle": "Stocké localement",
+      "cacheBody": "{count} documents conservés dans le cache local jusqu'au retour de la connexion.",
+      "onlineLabel": "En ligne",
+      "offlineLabel": "Hors ligne"
+    },
+    "pagination": {
+      "page": "Page",
+      "of": "sur",
+      "prev": "Précédent",
+      "next": "Suivant"
+    },
+    "searchbar": {
+      "placeholder": "Rechercher...",
+      "noResults": "Aucun résultat trouvé",
+      "noResultsHint": "Essayez un autre mot-clé ou vérifiez l'orthographe.",
+      "run": "Ouvrir"
+    },
+    "select": {
+      "placeholder": "Sélectionner...",
+      "searchPlaceholder": "Rechercher...",
+      "noOptions": "Aucune option trouvée"
+    },
+    "sidebar": {
+      "toggle": "Basculer la barre latérale"
+    },
+    "statusPill": {
+      "success": "Succès",
+      "warning": "Avertissement",
+      "danger": "Échec",
+      "neutral": "En attente"
+    },
+    "table": {
+      "empty": "Aucun enregistrement à afficher",
+      "selectAll": "Sélectionner toutes les lignes",
+      "selectRow": "Sélectionner la ligne",
+      "expandRow": "Développer la ligne"
+    },
+    "textarea": {
+      "limitExceeded": "Limite de caractères dépassée"
+    },
+    "upload": {
+      "dropTitle": "Glissez-déposez vos fichiers ici ou cliquez pour parcourir",
+      "dropHint": "Acceptés : {accept}",
+      "processing": "Traitement",
+      "processingHint": "Validation et envoi de vos fichiers...",
+      "complete": "Envoi terminé"
+    }
+  }
 }

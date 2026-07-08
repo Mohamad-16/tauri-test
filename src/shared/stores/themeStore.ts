@@ -1,6 +1,14 @@
 import { defineStore } from "pinia";
 
-export type ThemeMode = "light" | "dark";
+import {
+  applyTheme,
+  DEFAULT_THEME,
+  isThemeMode,
+  THEME_MODES,
+  type ThemeMode,
+} from "@/shared/theme";
+
+const STORAGE_KEY = "fluxbooks-theme";
 
 interface ThemeState {
   theme: ThemeMode;
@@ -8,27 +16,36 @@ interface ThemeState {
 
 export const useThemeStore = defineStore("theme", {
   state: (): ThemeState => ({
-    theme: "light",
+    theme: DEFAULT_THEME,
   }),
 
+  getters: {
+    availableThemes: (): ThemeMode[] => THEME_MODES,
+  },
+
   actions: {
-
     initializeTheme(): void {
-      const savedTheme = localStorage.getItem("fluxbooks-theme");
+      const savedTheme = localStorage.getItem(STORAGE_KEY);
 
-      if (savedTheme === "light" || savedTheme === "dark") {
-        this.theme = savedTheme;
-      }
+      this.theme = isThemeMode(savedTheme) ? savedTheme : DEFAULT_THEME;
 
-      document.documentElement.classList.toggle("dark", this.theme === "dark");
+      applyTheme(this.theme);
     },
 
-    toggleTheme(): void {
-      this.theme = this.theme === "light" ? "dark" : "light";
+    setTheme(mode: ThemeMode): void {
+      this.theme = mode;
 
-      localStorage.setItem("fluxbooks-theme", this.theme);
+      localStorage.setItem(STORAGE_KEY, mode);
 
-      document.documentElement.classList.toggle("dark", this.theme === "dark");
+      applyTheme(mode);
+    },
+
+    /** Cycles light -> dark -> custom -> light. */
+    cycleTheme(): void {
+      const currentIndex = THEME_MODES.indexOf(this.theme);
+      const nextTheme = THEME_MODES[(currentIndex + 1) % THEME_MODES.length];
+
+      this.setTheme(nextTheme);
     },
   },
 });

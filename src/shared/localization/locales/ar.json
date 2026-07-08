@@ -1,36 +1,198 @@
 {
-  "common.dashboard": "لوحة التحكم",
-  "common.logout": "تسجيل الخروج",
-  "common.connected": "متصل",
-  "common.test": "اختبار",
-
-  "login.title": "فلكس بوكس",
-  "login.subtitle": "عميل مسك الدفاتر الذكي",
-  "login.email": "البريد الإلكتروني",
-  "login.password": "كلمة المرور",
-  "login.signin": "تسجيل الدخول",
-  "login.signingin": "جاري تسجيل الدخول...",
-  "login.demo": "بيانات الدخول التجريبية",
-
-  "dashboard.evidenceHealth": "صحة الأدلة",
-  "dashboard.connectionStatus": "حالة الاتصال",
-  "dashboard.workspace": "مساحة العمل",
-  "dashboard.incomingFiles": "الملفات الواردة",
-  "dashboard.groupedDocuments": "المستندات المجمعة",
-  "dashboard.readyForReview": "جاهز للمراجعة",
-  "dashboard.rejectedFiles": "الملفات المرفوضة",
-  "dashboard.uploadEvidence": "رفع الأدلة",
-  "dashboard.uploadFiles": "رفع الملفات",
-  "dashboard.processingPipeline": "خط المعالجة",
-  "dashboard.recentActivity": "النشاط الأخير",
-  "dashboard.processingQueue": "قائمة معالجة الذكاء الاصطناعي",
-  "dashboard.reviewBacklog": "قائمة المراجعة البشرية",
-  "dashboard.successfullyProcessedEvidence": "الأدلة المعالجة بنجاح",
-  "dashboard.uploadDescription": "رفع فواتير، استحقاقات ووثائق اضافية.",
-  "dashboard.incoming": "وارد",
-  "dashboard.grouped": "مجمعة",
-  "dashboard.review": "جاهز للمراجعة", 
-  "dashboard.rejected": "مرفوضة",
-  "dashboard.upload": "رفع",
-  "dashboard.documentBacklog": "قائمة المستندات المتوقفة على المراجعة البشرية."
+  "common": {
+    "appName": "فلكس بوكس",
+    "tagline": "تطبيق العميل",
+    "dashboard": "لوحة التحكم",
+    "logout": "تسجيل الخروج",
+    "connected": "متصل",
+    "test": "اختبار"
+  },
+  "theme": {
+    "label": "المظهر",
+    "light": "فاتح",
+    "dark": "داكن",
+    "custom": "مخصص"
+  },
+  "language": {
+    "label": "اللغة"
+  },
+  "login": {
+    "logo": "FB",
+    "title": "فلكس بوكس",
+    "subtitle": "عميل مسك الدفاتر الذكي",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "signin": "تسجيل الدخول",
+    "signingin": "جاري تسجيل الدخول...",
+    "demo": "بيانات الدخول التجريبية",
+    "failed": "فشل تسجيل الدخول"
+  },
+  "dashboard": {
+    "evidenceHealth": "صحة الأدلة",
+    "connectionStatus": "حالة الاتصال",
+    "lastSync": "آخر مزامنة: {time}",
+    "workspace": "مساحة العمل",
+    "incomingFiles": "الملفات الواردة",
+    "groupedDocuments": "المستندات المجمعة",
+    "readyForReview": "جاهز للمراجعة",
+    "rejectedFiles": "الملفات المرفوضة",
+    "uploadEvidence": "رفع الأدلة",
+    "uploadFiles": "رفع الملفات",
+    "processingPipeline": "خط المعالجة",
+    "recentActivity": "النشاط الأخير",
+    "processingQueue": "قائمة معالجة الذكاء الاصطناعي",
+    "reviewBacklog": "قائمة المراجعة البشرية",
+    "successfullyProcessedEvidence": "الأدلة المعالجة بنجاح",
+    "uploadDescription": "رفع فواتير وإيصالات ومستندات داعمة.",
+    "incoming": "وارد",
+    "grouped": "مجمعة",
+    "review": "جاهز للمراجعة",
+    "rejected": "مرفوضة",
+    "documentBacklog": "مجموعات مستندات بانتظار التحقق اليدوي.",
+    "clients": {
+      "title": "مدير المكتب ← العملاء",
+      "subtitle": "إدارة مستخدمي المكتب وصلاحيات وصولهم للعملاء.",
+      "add": "إضافة عميل",
+      "edit": "تعديل العميل",
+      "editAction": "تعديل",
+      "deleteAction": "حذف",
+      "save": "حفظ",
+      "reset": "إعادة تعيين",
+      "formHint": "نموذج تجريبي لإدارة العملاء.",
+      "empty": "لا يوجد عملاء.",
+      "columns": {
+        "name": "العميل",
+        "email": "البريد الإلكتروني",
+        "role": "الدور",
+        "rights": "الصلاحيات",
+        "status": "الحالة",
+        "createdAt": "تاريخ الإنشاء",
+        "actions": "إجراءات"
+      },
+      "fields": {
+        "name": "اسم العميل",
+        "namePlaceholder": "مثال: شركة أبيكس للتجارة",
+        "email": "البريد الإلكتروني",
+        "emailPlaceholder": "client@company.com",
+        "role": "الدور",
+        "rights": "الصلاحيات",
+        "status": "الحالة",
+        "createdAt": "تاريخ الإنشاء",
+        "id": "المعرف"
+      },
+      "filters": {
+        "all": "الكل"
+      },
+      "statuses": {
+        "active": "نشط",
+        "invited": "مدعو",
+        "suspended": "موقوف"
+      },
+      "roles": {
+        "firmAdmin": "مدير المكتب",
+        "clientAdmin": "مدير العميل",
+        "clientUser": "مستخدم العميل"
+      },
+      "rights": {
+        "full": "وصول كامل",
+        "read": "قراءة فقط"
+      }
+    }
+  },
+  "core": {
+    "avatar": {
+      "alt": "الصورة الرمزية للمستخدم"
+    },
+    "breadcrumb": {
+      "label": "مسار التنقل"
+    },
+    "datepicker": {
+      "months": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر",
+      "weekdays": "أح,إث,ثل,أر,خم,جم,سب",
+      "prevMonth": "الشهر السابق",
+      "nextMonth": "الشهر التالي",
+      "selectDate": "اختر التاريخ",
+      "selectRange": "اختر الفترة",
+      "rangeSeparator": "←",
+      "periodLocked": "الفترة مقفلة"
+    },
+    "dialog": {
+      "defaultTitle": "نافذة",
+      "close": "إغلاق النافذة"
+    },
+    "drawer": {
+      "close": "إغلاق اللوحة"
+    },
+    "input": {
+      "togglePassword": "إظهار/إخفاء كلمة المرور"
+    },
+    "multiselect": {
+      "placeholder": "اختر الخيارات...",
+      "searchPlaceholder": "ابحث في الخيارات...",
+      "noOptions": "لا توجد خيارات",
+      "more": "+{count} أخرى",
+      "maxReached": "الحد الأقصى {max} عناصر"
+    },
+    "ocr": {
+      "zoomIn": "تكبير",
+      "zoomOut": "تصغير",
+      "resetZoom": "إعادة ضبط التكبير",
+      "boxesOn": "المناطق ظاهرة",
+      "boxesOff": "المناطق مخفية",
+      "hoverHint": "مرر المؤشر فوق منطقة مميزة لفحص النص المستخرج",
+      "matched": "مطابقة: {name}"
+    },
+    "offlineQueue": {
+      "clearTitle": "تمت المزامنة بالكامل",
+      "clearBody": "تم رفع جميع المستندات إلى السحابة.",
+      "pendingTitle": "قائمة الرفع",
+      "pendingBody": "{count} مستندات بانتظار المزامنة.",
+      "cacheTitle": "محفوظ محليًا",
+      "cacheBody": "{count} مستندات محفوظة في الذاكرة المحلية حتى عودة الاتصال.",
+      "onlineLabel": "متصل",
+      "offlineLabel": "غير متصل"
+    },
+    "pagination": {
+      "page": "صفحة",
+      "of": "من",
+      "prev": "السابق",
+      "next": "التالي"
+    },
+    "searchbar": {
+      "placeholder": "بحث...",
+      "noResults": "لا توجد نتائج",
+      "noResultsHint": "جرّب كلمة أخرى أو تحقق من الإملاء.",
+      "run": "فتح"
+    },
+    "select": {
+      "placeholder": "اختر...",
+      "searchPlaceholder": "بحث...",
+      "noOptions": "لا توجد خيارات"
+    },
+    "sidebar": {
+      "toggle": "تبديل الشريط الجانبي"
+    },
+    "statusPill": {
+      "success": "ناجح",
+      "warning": "تحذير",
+      "danger": "فشل",
+      "neutral": "قيد الانتظار"
+    },
+    "table": {
+      "empty": "لا توجد سجلات للعرض",
+      "selectAll": "تحديد كل الصفوف",
+      "selectRow": "تحديد الصف",
+      "expandRow": "توسيع الصف"
+    },
+    "textarea": {
+      "limitExceeded": "تم تجاوز حد الأحرف"
+    },
+    "upload": {
+      "dropTitle": "اسحب الملفات هنا أو انقر للاستعراض",
+      "dropHint": "المقبول: {accept}",
+      "processing": "جاري المعالجة",
+      "processingHint": "جاري التحقق من ملفاتك ورفعها...",
+      "complete": "اكتمل الرفع"
+    }
+  }
 }

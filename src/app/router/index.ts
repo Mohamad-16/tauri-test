@@ -42,21 +42,13 @@ export const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const authData = localStorage.getItem("fluxbooks-auth");
-
-  console.log("ROUTER GUARD");
-  console.log("Route:", to.path);
-  console.log("Auth:", authData);
-
-  const hasSession = authData === "true";
+  const hasSession = localStorage.getItem("fluxbooks-auth") === "true";
 
   if (to.meta.requiresAuth && !hasSession) {
-    console.log("Redirect -> login");
     return "/login";
   }
 
   if (to.meta.guestOnly && hasSession) {
-    console.log("Redirect -> dashboard");
     return "/dashboard";
   }
 

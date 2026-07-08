@@ -1,36 +1,198 @@
 {
-  "common.dashboard": "Dashboard",
-  "common.logout": "Logout",
-  "common.connected": "Connected",
-  "common.test": "Test",
-
-  "login.logo": "FB",
-  "login.title": "FluxBooks Tray",
-  "login.subtitle": "AI Powered Bookkeeping Client",
-  "login.email": "Email",
-  "login.password": "Password",
-  "login.signin": "Sign In",
-  "login.signingin": "Signing In...",
-  "login.demo": "Demo Credentials",
-
-  "dashboard.evidenceHealth": "Evidence Health",
-  "dashboard.connectionStatus": "Connection Status",
-  "dashboard.workspace": "Workspace",
-  "dashboard.incomingFiles": "Incoming Files",
-  "dashboard.groupedDocuments": "Grouped Documents",
-  "dashboard.readyForReview": "Ready For Review",
-  "dashboard.rejectedFiles": "Rejected Files",
-  "dashboard.uploadEvidence": "Upload Evidence",
-  "dashboard.uploadFiles": "Upload Files",
-  "dashboard.processingPipeline": "Processing Pipeline",
-  "dashboard.recentActivity": "Recent Activity",
-  "dashboard.processingQueue": "AI Processing Queue",
-  "dashboard.reviewBacklog": "Human Review Backlog",
-  "dashboard.successfullyProcessedEvidence": "Successfully Processed Evidence",
-  "dashboard.uploadDescription": "Upload invoices, receipts and supporting documents.",
-  "dashboard.incoming": "Incoming",
-  "dashboard.grouped": "Grouped",
-  "dashboard.review": "Ready For Review",
-  "dashboard.rejected": "Rejected",
-  "dashboard.documentBacklog": "Document groups awaiting manual verification."
+  "common": {
+    "appName": "FluxBooks",
+    "tagline": "Client Tray",
+    "dashboard": "Dashboard",
+    "logout": "Logout",
+    "connected": "Connected",
+    "test": "Test"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "custom": "Custom"
+  },
+  "language": {
+    "label": "Language"
+  },
+  "login": {
+    "logo": "FB",
+    "title": "FluxBooks Tray",
+    "subtitle": "AI Powered Bookkeeping Client",
+    "email": "Email",
+    "password": "Password",
+    "signin": "Sign In",
+    "signingin": "Signing In...",
+    "demo": "Demo Credentials",
+    "failed": "Login failed"
+  },
+  "dashboard": {
+    "evidenceHealth": "Evidence Health",
+    "connectionStatus": "Connection Status",
+    "lastSync": "Last Sync: {time}",
+    "workspace": "Workspace",
+    "incomingFiles": "Incoming Files",
+    "groupedDocuments": "Grouped Documents",
+    "readyForReview": "Ready For Review",
+    "rejectedFiles": "Rejected Files",
+    "uploadEvidence": "Upload Evidence",
+    "uploadFiles": "Upload Files",
+    "processingPipeline": "Processing Pipeline",
+    "recentActivity": "Recent Activity",
+    "processingQueue": "AI Processing Queue",
+    "reviewBacklog": "Human Review Backlog",
+    "successfullyProcessedEvidence": "Successfully Processed Evidence",
+    "uploadDescription": "Upload invoices, receipts and supporting documents.",
+    "incoming": "Incoming",
+    "grouped": "Grouped",
+    "review": "Ready For Review",
+    "rejected": "Rejected",
+    "documentBacklog": "Document groups awaiting manual verification.",
+    "clients": {
+      "title": "Firm Admin → Clients",
+      "subtitle": "Manage firm users and their client access.",
+      "add": "Add Client",
+      "edit": "Edit Client",
+      "editAction": "Edit",
+      "deleteAction": "Delete",
+      "save": "Save",
+      "reset": "Reset",
+      "formHint": "Mock CRUD for Firm Admin.",
+      "empty": "No clients found.",
+      "columns": {
+        "name": "Client",
+        "email": "Email",
+        "role": "Role",
+        "rights": "Rights",
+        "status": "Status",
+        "createdAt": "Created",
+        "actions": "Actions"
+      },
+      "fields": {
+        "name": "Client Name",
+        "namePlaceholder": "e.g. Apex Trading LLC",
+        "email": "Email",
+        "emailPlaceholder": "client@company.com",
+        "role": "Role",
+        "rights": "Rights",
+        "status": "Status",
+        "createdAt": "Created",
+        "id": "ID"
+      },
+      "filters": {
+        "all": "All"
+      },
+      "statuses": {
+        "active": "Active",
+        "invited": "Invited",
+        "suspended": "Suspended"
+      },
+      "roles": {
+        "firmAdmin": "Firm Admin",
+        "clientAdmin": "Client Admin",
+        "clientUser": "Client User"
+      },
+      "rights": {
+        "full": "Full access",
+        "read": "Read-only"
+      }
+    }
+  },
+  "core": {
+    "avatar": {
+      "alt": "User avatar"
+    },
+    "breadcrumb": {
+      "label": "Breadcrumb"
+    },
+    "datepicker": {
+      "months": "January,February,March,April,May,June,July,August,September,October,November,December",
+      "weekdays": "Su,Mo,Tu,We,Th,Fr,Sa",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "selectDate": "Select date",
+      "selectRange": "Select range",
+      "rangeSeparator": "→",
+      "periodLocked": "Period locked"
+    },
+    "dialog": {
+      "defaultTitle": "Dialog",
+      "close": "Close dialog"
+    },
+    "drawer": {
+      "close": "Close drawer"
+    },
+    "input": {
+      "togglePassword": "Toggle password visibility"
+    },
+    "multiselect": {
+      "placeholder": "Select options...",
+      "searchPlaceholder": "Search options...",
+      "noOptions": "No options found",
+      "more": "+{count} more",
+      "maxReached": "Maximum of {max} items selected"
+    },
+    "ocr": {
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "resetZoom": "Reset zoom",
+      "boxesOn": "Boxes on",
+      "boxesOff": "Boxes off",
+      "hoverHint": "Hover a highlighted zone to inspect the extracted text",
+      "matched": "Matched: {name}"
+    },
+    "offlineQueue": {
+      "clearTitle": "All synced",
+      "clearBody": "Every document has been uploaded to the cloud.",
+      "pendingTitle": "Uploading queue",
+      "pendingBody": "{count} documents waiting to sync.",
+      "cacheTitle": "Stored locally",
+      "cacheBody": "{count} documents kept in the local cache until connection returns.",
+      "onlineLabel": "Online",
+      "offlineLabel": "Offline"
+    },
+    "pagination": {
+      "page": "Page",
+      "of": "of",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "searchbar": {
+      "placeholder": "Search...",
+      "noResults": "No results found",
+      "noResultsHint": "Try a different keyword or check the spelling.",
+      "run": "Open"
+    },
+    "select": {
+      "placeholder": "Select...",
+      "searchPlaceholder": "Search...",
+      "noOptions": "No options found"
+    },
+    "sidebar": {
+      "toggle": "Toggle sidebar"
+    },
+    "statusPill": {
+      "success": "Success",
+      "warning": "Warning",
+      "danger": "Failed",
+      "neutral": "Pending"
+    },
+    "table": {
+      "empty": "No records to display",
+      "selectAll": "Select all rows",
+      "selectRow": "Select row",
+      "expandRow": "Expand row"
+    },
+    "textarea": {
+      "limitExceeded": "Character limit exceeded"
+    },
+    "upload": {
+      "dropTitle": "Drag & drop files here or click to browse",
+      "dropHint": "Accepted: {accept}",
+      "processing": "Processing",
+      "processingHint": "Validating and uploading your files...",
+      "complete": "Upload complete"
+    }
+  }
 }
