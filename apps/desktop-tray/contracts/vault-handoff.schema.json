@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fluxbooks.ai/contracts/vault-handoff.schema.json",
+  "title": "VaultHandoff",
+  "description": "Short-lived handoff granting a tray installation access to a vault-held credential. The credential itself never crosses this wire.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "handoff_id",
+    "tray_installation_id",
+    "vault_ref",
+    "scope",
+    "issued_at",
+    "expires_at",
+    "nonce"
+  ],
+  "properties": {
+    "handoff_id": { "type": "string", "minLength": 1 },
+    "tray_installation_id": { "type": "string", "minLength": 1 },
+    "vault_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Opaque vault reference; resolved only inside the OS keychain boundary."
+    },
+    "scope": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "nonce": { "type": "string", "minLength": 8 }
+  }
+}

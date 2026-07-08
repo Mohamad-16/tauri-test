@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fluxbooks.ai/contracts/client-list-sync.schema.json",
+  "title": "AuthorisedClientListSync",
+  "description": "Full-revision sync of the clients this tray installation is authorised to pull for.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["sync_id", "revision", "generated_at", "clients"],
+  "properties": {
+    "sync_id": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 0 },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "clients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["client_id", "display_name", "status", "source_connection_ids"],
+        "properties": {
+          "client_id": { "type": "string", "minLength": 1 },
+          "display_name": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["active", "suspended", "revoked"] },
+          "source_connection_ids": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
