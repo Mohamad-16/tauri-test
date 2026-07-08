@@ -12,6 +12,16 @@ dist
 dist-ssr
 *.local
 
+# Rust
+apps/desktop-tray/src-tauri/target
+
+# Test output
+test-results
+playwright-report
+coverage
+lcov.info
+mutants.out*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

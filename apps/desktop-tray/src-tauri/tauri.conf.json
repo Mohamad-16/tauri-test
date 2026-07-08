@@ -4,10 +4,10 @@
   "version": "0.1.0",
   "identifier": "com.fluxbooks.tray",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm run dev -w @fluxbooks/desktop-tray-ui",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist"
+    "beforeBuildCommand": "npm run build -w @fluxbooks/desktop-tray-ui",
+    "frontendDist": "../ui/dist"
   },
   "app": {
     "windows": [
