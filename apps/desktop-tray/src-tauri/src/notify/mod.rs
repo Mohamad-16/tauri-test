@@ -5,9 +5,19 @@
 
 use futures_util::StreamExt;
 use tauri::{AppHandle, Emitter};
-use tauri_plugin_notification::NotificationExt;
 use thiserror::Error;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
+
+#[cfg(not(target_os = "linux"))]
+use tauri_plugin_notification::NotificationExt;
+
+/// Must match the installed `.desktop` file's basename (without the
+/// `.desktop` suffix) - see `apps/desktop-tray/src-tauri/tauri.conf.json`
+/// bundle config. Without this GNOME can't associate the toast with the
+/// app, so it renders as an unmanaged, auto-dismissing banner instead of a
+/// real, persistent notification (see docs/dependencies.md).
+#[cfg(target_os = "linux")]
+const DESKTOP_ENTRY: &str = "FluxBooks";
 
 use crate::audit::Redactor;
 use crate::schemas::NotificationMessage;
@@ -92,13 +102,28 @@ fn dispatch(app: &AppHandle, redactor: &Redactor, raw: &str) {
 
     let clean = redact_message(redactor, message);
 
-    let _ = app
-        .notification()
-        .builder()
-        .title(&clean.title)
-        .body(&clean.body)
-        .show();
+    show_native(app, &clean.title, &clean.body);
     let _ = app.emit(EVENT_NAME, clean);
+}
+
+/// Linux: bypass `tauri-plugin-notification` and call `notify-rust`
+/// directly so we can set the `desktop-entry` hint - the plugin never sets
+/// one, so GNOME shows an unmanaged, auto-dismissing banner instead of a
+/// real notification.
+#[cfg(target_os = "linux")]
+fn show_native(_app: &AppHandle, title: &str, body: &str) {
+    let _ = notify_rust::Notification::new()
+        .appname(DESKTOP_ENTRY)
+        .summary(title)
+        .body(body)
+        .icon("fluxbooks")
+        .hint(notify_rust::Hint::DesktopEntry(DESKTOP_ENTRY.to_string()))
+        .show();
+}
+
+#[cfg(not(target_os = "linux"))]
+fn show_native(app: &AppHandle, title: &str, body: &str) {
+    let _ = app.notification().builder().title(title).body(body).show();
 }
 
 fn redact_message(redactor: &Redactor, message: NotificationMessage) -> NotificationMessage {

@@ -1394,6 +1394,7 @@ dependencies = [
  "futures",
  "futures-util",
  "keyring",
+ "notify-rust",
  "proptest",
  "rand 0.9.4",
  "regex",

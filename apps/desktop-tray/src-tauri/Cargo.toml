@@ -34,6 +34,14 @@ keyring = { version = "3", features = ["apple-native", "windows-native", "sync-s
 regex = "1"
 rand = "0.9"
 
+# tauri-plugin-notification's Linux backend never sets an app name or
+# `desktop-entry` hint, so GNOME can't associate the toast with our
+# installed .desktop file - it renders as an unmanaged, auto-dismissing
+# banner. Called directly (Linux only) in notify/mod.rs with the correct
+# hint instead. See docs/dependencies.md.
+[target.'cfg(target_os = "linux")'.dependencies]
+notify-rust = "4"
+
 [dev-dependencies]
 proptest = "1"
 cucumber = "0.21"
