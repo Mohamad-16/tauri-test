@@ -1,9 +1,20 @@
 //! WebSocket notification client: native toasts + events to the webview.
+//!
+//! Runs Rust-side (not in the webview) so notifications keep working while
+//! the main window is hidden to the tray.
 
-use crate::schemas::NotificationMessage;
 use futures_util::StreamExt;
+use tauri::{AppHandle, Emitter};
+use tauri_plugin_notification::NotificationExt;
 use thiserror::Error;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
+
+use crate::audit::Redactor;
+use crate::schemas::NotificationMessage;
+
+const DEFAULT_WS_URL: &str = "ws://127.0.0.1:9800/ws";
+const EVENT_NAME: &str = "notification://incoming";
+const MAX_BACKOFF: std::time::Duration = std::time::Duration::from_secs(60);
 
 #[derive(Debug, Error)]
 pub enum NotifyError {
@@ -14,12 +25,19 @@ pub enum NotifyError {
     InvalidUtf8(#[from] std::string::FromUtf8Error),
 
     #[error("invalid notification payload: {0}")]
-    InvalidPayload(#[from] serde_json::Error),
+    InvalidPayload(#[from] crate::schemas::SchemaError),
 
     #[error("unexpected websocket message type")]
     UnexpectedMessage,
 }
 
+fn ws_url() -> String {
+    std::env::var("FLUXBOOKS_WS_URL").unwrap_or_else(|_| DEFAULT_WS_URL.to_string())
+}
+
+/// Receives and strictly parses a single frame. Kept standalone (rather than
+/// folded into the reconnect loop) so it stays unit-testable against a mock
+/// server without needing a live `AppHandle`.
 pub async fn receive_notification_once(endpoint: &str) -> Result<NotificationMessage, NotifyError> {
     let (mut ws_stream, _) = connect_async(endpoint).await?;
 
@@ -34,30 +52,87 @@ pub async fn receive_notification_once(endpoint: &str) -> Result<NotificationMes
         _ => return Err(NotifyError::UnexpectedMessage),
     };
 
-    let notification = serde_json::from_str::<NotificationMessage>(&text)?;
-    Ok(notification)
+    Ok(crate::schemas::parse_strict(&text)?)
+}
+
+/// Spawns the reconnecting WebSocket client. Call once from `run()`'s
+/// `.setup()` hook; runs for the lifetime of the app. Exponential backoff on
+/// disconnect, capped at [`MAX_BACKOFF`].
+pub fn spawn_ws_client(app: AppHandle) {
+    tauri::async_runtime::spawn(async move {
+        let redactor = Redactor::standard();
+        let mut backoff = std::time::Duration::from_secs(1);
+
+        loop {
+            if let Ok((stream, _)) = connect_async(ws_url()).await {
+                backoff = std::time::Duration::from_secs(1);
+                let (_, mut read) = stream.split();
+                while let Some(Ok(msg)) = read.next().await {
+                    if let Message::Text(raw) = msg {
+                        dispatch(&app, &redactor, raw.as_str());
+                    }
+                }
+            }
+
+            tokio::time::sleep(backoff).await;
+            backoff = (backoff * 2).min(MAX_BACKOFF);
+        }
+    });
+}
+
+/// Parses, redacts, then surfaces one frame as a native toast + webview
+/// event. Split out from the connect loop so it's unit-testable without a
+/// live socket or `AppHandle`.
+fn dispatch(app: &AppHandle, redactor: &Redactor, raw: &str) {
+    let Ok(message) = crate::schemas::parse_strict::<NotificationMessage>(raw) else {
+        // Reject-and-retry: an invalid frame is dropped, never coerced or
+        // partially accepted. The connection itself stays open.
+        return;
+    };
+
+    let clean = redact_message(redactor, message);
+
+    let _ = app
+        .notification()
+        .builder()
+        .title(&clean.title)
+        .body(&clean.body)
+        .show();
+    let _ = app.emit(EVENT_NAME, clean);
+}
+
+fn redact_message(redactor: &Redactor, message: NotificationMessage) -> NotificationMessage {
+    NotificationMessage {
+        title: redactor.redact(&message.title),
+        body: redactor.redact(&message.body),
+        ..message
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::schemas::Severity;
     use futures_util::SinkExt;
     use tokio::net::TcpListener;
-    use tokio_tungstenite::{accept_async, tungstenite::Message};
+    use tokio_tungstenite::accept_async;
+
+    fn sample() -> NotificationMessage {
+        NotificationMessage {
+            id: "n-1".to_string(),
+            title: "Pull completed".to_string(),
+            body: "12 documents fetched".to_string(),
+            severity: Severity::Info,
+            occurred_at: "2026-07-08T10:00:00Z".to_string(),
+        }
+    }
 
     #[tokio::test]
     async fn receives_notification_from_mock_websocket() {
         let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
         let addr = listener.local_addr().unwrap();
 
-        let expected = NotificationMessage {
-            id: "n-1".to_string(),
-            title: "Pull completed".to_string(),
-            body: "12 documents fetched".to_string(),
-            severity: crate::schemas::Severity::Info,
-            occurred_at: "2026-07-08T10:00:00Z".to_string(),
-        };
-
+        let expected = sample();
         let expected_clone = expected.clone();
         let server = tokio::spawn(async move {
             let (stream, _peer) = listener.accept().await.unwrap();
@@ -73,5 +148,22 @@ mod tests {
 
         assert_eq!(actual, expected);
         server.await.unwrap();
+    }
+
+    #[test]
+    fn redact_message_scrubs_title_and_body() {
+        let redactor = Redactor::standard();
+        let mut leaking = sample();
+        leaking.body = "token=ghp_16C7e42F292c6912E7710c838347Ae178B4a".to_string();
+
+        let clean = redact_message(&redactor, leaking);
+        assert!(!clean.body.contains("ghp_"));
+    }
+
+    #[test]
+    fn invalid_frame_is_rejected_not_coerced() {
+        assert!(
+            crate::schemas::parse_strict::<NotificationMessage>(r#"{"unexpected": true}"#).is_err()
+        );
     }
 }

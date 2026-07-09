@@ -32,6 +32,7 @@ pub fn run() {
         // are independent of this runtime plugin and unaffected.
         .setup(|app| {
             lifecycle::init(app.handle())?;
+            notify::spawn_ws_client(app.handle().clone());
             Ok(())
         })
         .run(tauri::generate_context!())
