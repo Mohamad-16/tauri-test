@@ -1,0 +1,90 @@
+[package]
+name = "fluxbooks"
+version = "0.1.0"
+description = "FluxBooks desktop tray application"
+authors = ["FluxBooks"]
+edition = "2021"
+# Spec T003 says Rust 1.79; the mid-2026 dependency tree (edition-2024 crates)
+# requires >= 1.85. Deviation recorded in docs/dependencies.md.
+rust-version = "1.85"
+
+[lib]
+# The `_lib` suffix avoids a lib/bin name conflict on Windows.
+name = "fluxbooks_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon"] }
+tauri-plugin-opener = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-updater = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time"] }
+tokio-tungstenite = { version = "0.28", features = ["rustls-tls-native-roots"] }
+futures-util = "0.3"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tokio-cron-scheduler = "0.15"
+rusqlite = { version = "0.37", features = ["bundled"] }
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
+regex = "1"
+rand = "0.9"
+
+# tauri-plugin-notification's Linux backend never sets an app name or
+# `desktop-entry` hint, so GNOME can't associate the toast with our
+# installed .desktop file - it renders as an unmanaged, auto-dismissing
+# banner. Called directly (Linux only) in notify/mod.rs with the correct
+# hint instead. See docs/dependencies.md.
+[target.'cfg(target_os = "linux")'.dependencies]
+notify-rust = "4"
+
+[dev-dependencies]
+proptest = "1"
+cucumber = "0.21"
+tempfile = "3"
+futures = "0.3"
+
+[features]
+# Used for production builds or when a dev server isn't specified. Loads the
+# bundled frontend instead of `build.devUrl` (http://localhost:1420) - without
+# it a plain `cargo build`/`cargo install` binary tries to connect to the dev
+# server and fails with "Connection refused". Required by the Tauri CLI - do
+# not remove.
+custom-protocol = ["tauri/custom-protocol"]
+# Enables the in-memory fakes (testkit module) used by integration/bdd tests.
+testkit = []
+
+[[test]]
+name = "bdd"
+path = "tests/bdd/main.rs"
+harness = false
+required-features = ["testkit"]
+
+[[test]]
+name = "property"
+path = "tests/property/main.rs"
+required-features = ["testkit"]
+
+[[test]]
+name = "integration"
+path = "tests/integration/main.rs"
+required-features = ["testkit"]
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

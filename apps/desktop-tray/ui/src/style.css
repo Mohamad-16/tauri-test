@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Fallback tokens (= light theme) so the first paint is correct before
+ * `applyTheme` runs. The runtime source of truth is shared/theme/themes.ts.
+ */
+:root {
+  --color-background: 241 245 249;
+  --color-surface: 255 255 255;
+  --color-surface-muted: 241 245 249;
+  --color-surface-hover: 248 250 252;
+
+  --color-foreground: 15 23 42;
+  --color-muted: 71 85 105;
+  --color-subtle: 148 163 184;
+
+  --color-border: 226 232 240;
+  --color-border-strong: 203 213 225;
+
+  --color-primary: 5 150 105;
+  --color-primary-hover: 4 120 87;
+  --color-on-primary: 255 255 255;
+
+  --color-secondary: 226 232 240;
+  --color-secondary-hover: 203 213 225;
+  --color-on-secondary: 30 41 59;
+
+  --color-inverse: 15 23 42;
+  --color-inverse-foreground: 241 245 249;
+
+  --color-accent: 99 102 241;
+
+  --color-success: 16 185 129;
+  --color-warning: 217 119 6;
+  --color-danger: 239 68 68;
+  --color-info: 59 130 246;
+
+  --color-overlay: 2 6 23;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}

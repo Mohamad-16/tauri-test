@@ -50,13 +50,16 @@ jobs:
             libwebkit2gtk-4.1-dev \
             libglib2.0-dev \
             libxdo-dev \
-            librsvg2-dev
+            librsvg2-dev \
+            libayatana-appindicator3-dev
 
       - name: Install Dependencies
         run: npm install
 
       - name: Build Tauri Application
         uses: tauri-apps/tauri-action@v0
+        with:
+          projectPath: apps/desktop-tray
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -65,4 +68,4 @@ jobs:
         with:
           name: tauri-build-${{ matrix.platform }}
           path: |
-            src-tauri/target/release/bundle/**/*
+            apps/desktop-tray/src-tauri/target/release/bundle/**/*

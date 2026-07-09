@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fluxbooks.ai/contracts/telemetry.schema.json",
+  "title": "Telemetry",
+  "description": "Outbound operational telemetry event. Every payload passes the audit redactor before leaving the device (SC-005).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "tray_installation_id",
+    "app_version",
+    "event_type",
+    "occurred_at",
+    "attributes"
+  ],
+  "properties": {
+    "event_id": { "type": "string", "minLength": 1 },
+    "tray_installation_id": { "type": "string", "minLength": 1 },
+    "app_version": { "type": "string", "minLength": 1 },
+    "event_type": {
+      "type": "string",
+      "enum": ["pull_started", "pull_completed", "pull_failed", "update_applied", "heartbeat"]
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "attributes": { "type": "object", "additionalProperties": true }
+  }
+}

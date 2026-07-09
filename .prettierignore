@@ -1,0 +1,9 @@
+dist
+node_modules
+package-lock.json
+apps/desktop-tray/src-tauri/target
+apps/desktop-tray/src-tauri/gen
+apps/desktop-tray/src-tauri/capabilities
+playwright-report
+test-results
+coverage

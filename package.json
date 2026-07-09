@@ -1,40 +1,43 @@
 {
-  "name": "fluxbooks",
+  "name": "fluxbooks-monorepo",
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "workspaces": [
+    "apps/desktop-tray/ui",
+    "tools/mock-ws-server"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
-  },
-  "dependencies": {
-    "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-notification": "^2.3.3",
-    "@tauri-apps/plugin-opener": "^2",
-    "pinia": "^3.0.4",
-    "vue": "^3.5.13",
-    "vue-i18n": "^11.4.6",
-    "vue-router": "^4.6.4"
+    "dev": "npm run dev -w @fluxbooks/desktop-tray-ui",
+    "build": "npm run build -w @fluxbooks/desktop-tray-ui",
+    "preview": "npm run preview -w @fluxbooks/desktop-tray-ui",
+    "tauri": "tauri",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write .",
+    "test:e2e": "npm run test:e2e -w @fluxbooks/desktop-tray-ui",
+    "mock:ws": "node tools/mock-ws-server/server.mjs",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2",
-    "@types/node": "^25.9.3",
     "@typescript-eslint/parser": "^8.61.1",
-    "@vitejs/plugin-vue": "^5.2.1",
     "@vue/eslint-config-typescript": "^14.8.0",
-    "autoprefixer": "^10.5.0",
     "eslint": "^10.5.0",
     "eslint-plugin-vue": "^10.9.2",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
-    "postcss": "^8.5.15",
     "prettier": "^3.8.4",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.61.1",
-    "vite": "^6.0.3",
-    "vue-tsc": "^2.1.10"
+    "typescript-eslint": "^8.61.1"
+  },
+  "lint-staged": {
+    "*.{ts,vue,js,mjs,json,css,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,vue}": [
+      "eslint --fix"
+    ],
+    "*.rs": [
+      "cargo fmt --manifest-path apps/desktop-tray/src-tauri/Cargo.toml --"
+    ]
   }
 }

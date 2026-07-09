@@ -1,0 +1,19 @@
+# cargo-mutants config (spec 022 T037 groundwork).
+#
+# Scoped to the critical paths named in T037 rather than the whole crate -
+# mutating GTK/webkit-adjacent code is slow and not where correctness risk
+# lives. Goal: >= 70% mutation score (MSI) on these paths. Run locally with
+# `cargo mutants`; CI runs this as a non-blocking job (see docs/testing.md).
+
+examine_globs = [
+  "src/credentials/**",
+  "src/schedule/**",
+  "src/audit/**",
+  "src/update/**",
+]
+
+exclude_globs = ["src/testkit/**"]
+
+test_tool = "cargo"
+additional_cargo_test_args = ["--features", "testkit"]
+timeout_multiplier = 3.0
