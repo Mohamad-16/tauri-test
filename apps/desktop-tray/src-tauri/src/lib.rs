@@ -30,6 +30,7 @@ pub fn run() {
         // placeholder config would abort at startup either way. The
         // `update::Updater` port + `TauriUpdater` skeleton + fakes (T012)
         // are independent of this runtime plugin and unaffected.
+        .invoke_handler(tauri::generate_handler![notify::show_notification])
         .setup(|app| {
             lifecycle::init(app.handle())?;
             notify::spawn_ws_client(app.handle().clone());

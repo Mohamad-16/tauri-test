@@ -102,28 +102,64 @@ fn dispatch(app: &AppHandle, redactor: &Redactor, raw: &str) {
 
     let clean = redact_message(redactor, message);
 
-    show_native(app, &clean.title, &clean.body);
+    if let Err(e) = show_native(app, &clean.title, &clean.body) {
+        eprintln!("[notify] toast failed: {e}");
+    }
     let _ = app.emit(EVENT_NAME, clean);
 }
 
-/// Linux: bypass `tauri-plugin-notification` and call `notify-rust`
-/// directly so we can set the `desktop-entry` hint - the plugin never sets
-/// one, so GNOME shows an unmanaged, auto-dismissing banner instead of a
-/// real notification.
+/// Tauri command so webview-triggered notifications go through the same
+/// Rust path as WebSocket ones (desktop-entry hint + live D-Bus connection).
+/// Returns the notification id, or the D-Bus error so the frontend can log it.
+#[tauri::command]
+pub fn show_notification(app: AppHandle, title: String, body: String) -> Result<String, String> {
+    show_native(&app, &title, &body)
+}
+
+/// GNOME Shell destroys a notification source - and every notification it
+/// owns - the instant the sending D-Bus connection closes, but only for
+/// sources attributed to an app (desktop-entry hint / matched appname).
+/// `notify-rust` opens a fresh connection per `show()` and dropping the
+/// returned handle closes it, so our notifications were deleted microseconds
+/// after being accepted (GNOME returned an id, then nothing ever displayed).
+/// Keeping the handles alive keeps the connections - and the notifications -
+/// alive for the app's lifetime.
 #[cfg(target_os = "linux")]
-fn show_native(_app: &AppHandle, title: &str, body: &str) {
-    let _ = notify_rust::Notification::new()
+static LIVE_HANDLES: std::sync::Mutex<Vec<notify_rust::NotificationHandle>> =
+    std::sync::Mutex::new(Vec::new());
+
+#[cfg(target_os = "linux")]
+fn show_native(_app: &AppHandle, title: &str, body: &str) -> Result<String, String> {
+    let handle = notify_rust::Notification::new()
         .appname(DESKTOP_ENTRY)
         .summary(title)
         .body(body)
         .icon("fluxbooks")
         .hint(notify_rust::Hint::DesktopEntry(DESKTOP_ENTRY.to_string()))
-        .show();
+        .show()
+        .map_err(|e| format!("notify-rust/dbus error: {e}"))?;
+
+    let id = handle.id().to_string();
+    if let Ok(mut handles) = LIVE_HANDLES.lock() {
+        handles.push(handle);
+        // Bound the open-connection count; dropping the oldest may let GNOME
+        // reap its long-since-read notification, which is acceptable.
+        if handles.len() > 64 {
+            handles.remove(0);
+        }
+    }
+    Ok(id)
 }
 
 #[cfg(not(target_os = "linux"))]
-fn show_native(app: &AppHandle, title: &str, body: &str) {
-    let _ = app.notification().builder().title(title).body(body).show();
+fn show_native(app: &AppHandle, title: &str, body: &str) -> Result<String, String> {
+    app.notification()
+        .builder()
+        .title(title)
+        .body(body)
+        .show()
+        .map(|()| "plugin".to_string())
+        .map_err(|e| format!("notification plugin error: {e}"))
 }
 
 fn redact_message(redactor: &Redactor, message: NotificationMessage) -> NotificationMessage {
