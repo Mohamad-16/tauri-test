@@ -638,7 +638,7 @@ export const sidebarConfig = {
   widths: {
     expanded: "w-64",
     mini: "w-20",
-    collapsed: "w-0 overflow-hidden border-none",
+    collapsed: "w-16 overflow-hidden border-none",
   },
   header: "h-16 px-4 flex items-center justify-between border-b border-border shrink-0 select-none",
   toggle:

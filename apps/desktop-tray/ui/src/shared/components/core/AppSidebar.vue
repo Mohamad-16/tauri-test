@@ -26,6 +26,20 @@ const widthClasses = computed(() => {
   }
   return props.modelValue ? sidebarConfig.widths.expanded : sidebarConfig.widths.mini;
 });
+
+const bodyClasses = computed(() => {
+  if (props.layoutStyle === "collapsible" && !props.modelValue) {
+    return "hidden";
+  }
+  return sidebarConfig.body;
+});
+
+const footerClasses = computed(() => {
+  if (props.layoutStyle === "collapsible" && !props.modelValue) {
+    return "hidden";
+  }
+  return sidebarConfig.footer;
+});
 </script>
 
 <template>
@@ -50,11 +64,11 @@ const widthClasses = computed(() => {
       </button>
     </div>
 
-    <div :class="sidebarConfig.body">
+    <div :class="bodyClasses">
       <slot />
     </div>
 
-    <div :class="sidebarConfig.footer">
+    <div :class="footerClasses">
       <slot name="footer" />
     </div>
   </aside>

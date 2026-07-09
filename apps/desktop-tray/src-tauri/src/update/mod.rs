@@ -1,1 +1,6 @@
-//! Self-update port (`Updater`) and implementations. Contract: contracts/updater.md (spec 022).
+//! Self-update port (`Updater`) (spec 022 T012).
+
+pub mod base;
+pub mod tauri_updater;
+
+pub use base::{UpdateError, UpdateInfo, Updater};

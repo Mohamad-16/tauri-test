@@ -1,4 +1,4 @@
-//! FluxBooks desktop tray application core.
+//! `FluxBooks` desktop tray application core.
 //!
 //! Module layout follows specs/022-desktop-tray-application plan.md (T001).
 
@@ -24,7 +24,16 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
+        // tauri-plugin-updater is intentionally NOT registered yet: its
+        // config requires a real `pubkey`/`endpoints` pair, which don't
+        // exist until signing keys are provisioned. Registering it with a
+        // placeholder config would abort at startup either way. The
+        // `update::Updater` port + `TauriUpdater` skeleton + fakes (T012)
+        // are independent of this runtime plugin and unaffected.
+        .setup(|app| {
+            lifecycle::init(app.handle())?;
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

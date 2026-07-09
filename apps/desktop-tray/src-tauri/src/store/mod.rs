@@ -233,7 +233,7 @@ mod tests {
         let s = store();
         assert_eq!(
             s.user_version().unwrap(),
-            migrations::MIGRATIONS.len() as i64
+            i64::try_from(migrations::MIGRATIONS.len()).unwrap()
         );
     }
 

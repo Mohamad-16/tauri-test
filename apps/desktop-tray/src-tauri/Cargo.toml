@@ -41,6 +41,12 @@ tempfile = "3"
 futures = "0.3"
 
 [features]
+# Used for production builds or when a dev server isn't specified. Loads the
+# bundled frontend instead of `build.devUrl` (http://localhost:1420) - without
+# it a plain `cargo build`/`cargo install` binary tries to connect to the dev
+# server and fails with "Connection refused". Required by the Tauri CLI - do
+# not remove.
+custom-protocol = ["tauri/custom-protocol"]
 # Enables the in-memory fakes (testkit module) used by integration/bdd tests.
 testkit = []
 
